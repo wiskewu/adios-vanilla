@@ -9,6 +9,6 @@ top: true
 summary: 欢迎来到我的博客！
 ---
 
-# Hello World
+## Hello World
 
 你好，朋友！本博客由 [wiskewu](https://github.com/wiskewu) 倾情制作！

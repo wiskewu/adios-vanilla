@@ -1,0 +1,129 @@
+
+:root {
+  /* 内容宽度 */
+  --content-width: min(720px, 95vw);
+  /* 内容外边距 */
+  --content-margin: 1rem;
+  /* header高度 */
+  --header-height: 64px;
+  /* footer高度 */
+  --footer-height: 64px;
+}
+
+:root, html[data-theme=light] {
+  /* 文字主色 */
+  --primary-text-color: black;
+  /* 文字副色 */
+  --secondary-text-color: #404040;
+  /* 边框主色 */
+  --primary-border-color: #999999;
+  /* 背景主色 */
+  --primary-bg-color: #ffffff;
+  /* 链接颜色 */
+  --primary-link-color: #6c9ee9;
+
+  /* 行内代码 */
+  --inline-code-color: #676767;
+  --inline-code-bg-color: #f0f4f9;
+
+  /* note container color, color from: https://mdit-plugins.github.io/zh/alert.html#%E9%80%89%E9%A1%B9 */
+  --note-info-title-color: #656869;
+  --note-info-bg-color: rgb(142 150 170 / 14%);
+
+  --note-important-title-color: #6f42c1;
+  --note-important-bg-color: rgb(159 122 234 / 14%);
+
+  --note-tip-title-color: #18794e;
+  --note-tip-bg-color: rgb(16 185 129 / 14%);
+
+  --note-warning-title-color: #915930;
+  --note-warning-bg-color: rgb(234 179 8 / 14%);
+
+  --note-caution-title-color: #b8272c;
+  --note-caution-bg-color: rgb(244 63 94 / 14%);
+
+  /* code highlight */
+  /* colors token from https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/github.min.css */
+  --code-color: #24292e;
+  --code-color-bg: #fefefe;
+  --code-color-keyword: #d73a49;
+  --code-color-title: #6f42c1;
+  --code-color-attr: #005cc5;
+  --code-color-string: #032f62;
+  --code-color-symbol: #e36209;
+  --code-color-comment: #6a737d;
+  --code-color-name: #22863a;
+  --code-color-subst: var(--code-color);
+  --code-color-section: #005cc5;
+  --code-color-bullet: #735c0f;
+  --code-color-emphasis: var(--code-color);
+  --code-color-strong: var(--code-color);
+  --code-color-addition: #22863a;
+  --code-color-addition-bg: #f0fff4;
+  --code-color-deletion: #b31d28;
+  --code-color-deletion-bg: #ffeef0;
+
+  /* code-lines */
+  --code-color-line: var(--code-color);
+  --code-color-bg-line: var(--code-color-bg);
+  --code-color-inserted-line: #dafbe1;
+  --code-color-deleted-line: #ffebe9;
+  --code-color-line-indicator: #3b82f6;
+  --code-color-highlighted-line: #f0f4f9;
+}
+
+html[data-theme=dark] {
+  --primary-text-color: #c9d1d9;
+  --secondary-text-color: #878787;
+  --primary-border-color: #cfcfcf;
+  --primary-bg-color: #131315;
+  --primary-link-color: #6c9ee9;
+
+  --inline-code-color: var(--primary-text-color);
+  --inline-code-bg-color: hsla(215,8%,47%,.4);
+
+  /* note container color, color from: https://mdit-plugins.github.io/zh/alert.html#%E9%80%89%E9%A1%B9 */
+  --note-info-title-color: #939499;
+  --note-info-bg-color: rgb(101 117 133 / 16%);
+
+  --note-important-title-color: #c8abfa;
+  --note-important-bg-color: rgb(159 122 234 / 16%);
+
+  --note-tip-title-color: #3dd68c;
+  --note-tip-bg-color: rgb(16 185 129 / 16%);
+
+  --note-warning-title-color: #f9b44e;
+  --note-warning-bg-color: rgb(234 179 8 / 16%);
+
+  --note-caution-title-color: #f66f81;
+  --note-caution-bg-color: rgb(244 63 94 / 16%);
+
+  /* code highlight */
+  /* colors token from https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/github-dark.min.css */
+  --code-color: #c9d1d9;
+  --code-color-bg: #0d1117;
+  --code-color-keyword: #ff7b72;
+  --code-color-title: #d2a8ff;
+  --code-color-attr: #79c0ff;
+  --code-color-string: #a5d6ff;
+  --code-color-symbol: #ffa657;
+  --code-color-comment: #8b949e;
+  --code-color-name: #7ee787;
+  --code-color-subst: var(--code-color);
+  --code-color-section: #1f6feb;
+  --code-color-bullet: #f2cc60;
+  --code-color-emphasis: var(--code-color);
+  --code-color-strong: var(--code-color);
+  --code-color-addition: #aff5b4;
+  --code-color-addition-bg: #033a16;
+  --code-color-deletion: #ffdcd7;
+  --code-color-deletion-bg: #67060c;
+
+  /* code-lines */
+  --code-color-line: var(--code-color);
+  --code-color-bg-line: var(--code-color-bg);
+  --code-color-inserted-line: #dafce2;
+  --code-color-deleted-line: #ffece9;
+  --code-color-line-indicator: #3982f4;
+  --code-color-highlighted-line: #423541;
+}

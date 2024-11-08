@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Adiós·VBlog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <meta name="description" content="">
+    <link rel="stylesheet" href="../bundles/css/index.css">
+    <script src="../bundles/js/env.js"></script>
+    <script src="../bundles/js/imports.js"></script>
+</head>
+<body>
+  <w-blog-layout>
+    <div id="page-header">
+      <w-blog-header></w-blog-header>
+    </div>
+    <div id="page-content">
+      <w-blog-list src="./data/list.json" data-limit="10" title="New Posts" data-dk="created" data-top="true"></w-blog-list>
+    </div>
+    <div id="page-footer">
+      <w-blog-footer></w-blog-footer>
+    </div>
+  </w-blog-layout>
+  <script src="../bundles/js/index.js" type="module"></script>
+</body>

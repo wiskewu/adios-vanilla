@@ -1,0 +1,116 @@
+:root {
+  /* https://modernfontstacks.com/
+     geometric humanist font */
+  --font-system: Avenir, Montserrat, Corbel, source-sans-pro, sans-serif;
+  /* monospace code font */
+  --code-font-system: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+  --code-font-system-size: 0.8rem;
+}
+
+html {
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
+}
+html, body {
+  height: 100%;
+}
+body {
+  width: var(--content-width);
+  font-family: var(--font-system);
+  font-weight: normal;
+  margin: 0 auto;
+  /* min-height: 100vh; */
+}
+
+body #root {
+  margin: 0 var(--content-margin);
+  position: relative;
+  height: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+h1 {
+  font-size: 1.75rem;
+}
+h2 {
+  font-size: 1.5rem;
+  padding-bottom: .3rem;
+}
+h3 {
+  font-size: 1.25rem;
+}
+h4 {
+  font-size: 1rem;
+}
+h5 {
+  font-size: .875rem;
+}
+h6 {
+  font-size: .85rem;
+}
+
+a, a:hover {
+  color: var(--primary-link-color);
+}
+
+/* add language for code block */
+pre {
+  margin: .5rem 0;
+  position: relative;
+}
+pre > code {
+  color: var(--code-color);
+  font-size: .875rem;
+  background-color: var(--code-color-bg);
+}
+
+code {
+  color: var(--inline-code-color);
+  background-color: var(--inline-code-bg-color);
+  overflow-wrap: break-word;
+  font-family: var(--code-font-system);
+  font-size: var(--code-font-system-size);
+  padding: .1rem .35rem;
+  font-size: 0.75rem;
+  border-radius: 6px;
+}
+pre[data-lang]::after {
+  content: attr(data-lang);
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: .1rem .35rem;
+  display: inline-block;
+  color: var(--code-color);
+}
+
+/* add button-copy for code block */
+pre > span.copy-code {
+  position: absolute;
+  top: .25rem;
+  right: .25rem;
+  padding: .1rem .35rem;
+  display: inline-block;
+  color: var(--code-color-bg);
+  background-color: var(--code-color);
+  border: 1px solid var(--code-color);
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 99;
+}
+
+pre > span.copy-code:hover {
+  opacity: 1;
+}
+
+/* 图标 */
+.icon {
+  color: var(--secondary-text-color);
+}

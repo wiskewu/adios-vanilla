@@ -6,6 +6,26 @@
   --code-font-system: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
   --code-font-system-size: 0.8rem;
 }
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(163 162 162 / 30%);
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(163 162 162 / 100%);
+}
 
 html {
   background-color: var(--primary-bg-color);
@@ -113,4 +133,23 @@ pre > span.copy-code:hover {
 /* 图标 */
 .icon {
   color: var(--secondary-text-color);
+}
+
+/* blockquote */
+blockquote {
+  margin: 1rem 0;
+  padding: .5rem 1rem .5rem 1rem;
+  color: var(--primary-text-color);
+  background-color: var(--secondary-bg-color);
+  border-left: .4em solid var(--primary-border-color);
+}
+
+/* table */
+table {
+  margin: 1rem 0;
+  border-collapse: collapse;
+}
+table td, table th {
+  padding: .5rem;
+  border: 1px solid var(--primary-border-color);
 }

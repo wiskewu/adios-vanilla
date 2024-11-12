@@ -19,6 +19,8 @@
   --primary-border-color: #999999;
   /* 背景主色 */
   --primary-bg-color: #ffffff;
+  /* 背景副色 */
+  --secondary-bg-color: #f5f6f7;
   /* 链接颜色 */
   --primary-link-color: #6c9ee9;
 
@@ -77,6 +79,7 @@ html[data-theme=dark] {
   --secondary-text-color: #878787;
   --primary-border-color: #cfcfcf;
   --primary-bg-color: #131315;
+  --secondary-bg-color: #1c1e21;
   --primary-link-color: #6c9ee9;
 
   --inline-code-color: var(--primary-text-color);

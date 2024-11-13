@@ -9,6 +9,7 @@
 /* width */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 /* Track */
@@ -79,9 +80,36 @@ a, a:hover {
 }
 
 /* add language for code block */
-pre {
+.code-block {
   margin: .5rem 0;
+  padding: 0.5rem 0 .2rem 0;
+  border: 1px solid var(--primary-border-color);
+  border-radius: 5px;
+  background: var(--code-color-bg);
+}
+.code-block > .code-block-actions {
+  display: flex;
+  align-items: center;
+}
+.code-block > .code-block-actions > span {
+  padding: .1rem .35rem;
+  display: inline-block;
+  margin-left: 1rem;
+}
+.code-block > .code-block-actions > span:first-child {
+  margin-left: auto;
+}
+.code-block > .code-block-actions > span.code-block-actions--copy {
+  color: var(--code-color-bg);
+  background-color: var(--code-color);
+  border: 1px solid var(--code-color);
+  border-radius: 4px;
+  cursor: pointer;
+}
+pre {
   position: relative;
+  padding: .2rem .5rem 0.2rem 0.1rem;
+  margin: 0;
 }
 pre > code {
   color: var(--code-color);
@@ -99,7 +127,7 @@ code {
   font-size: 0.75rem;
   border-radius: 6px;
 }
-pre[data-lang]::after {
+/* pre[data-lang]::after {
   content: attr(data-lang);
   position: absolute;
   top: 0;
@@ -108,27 +136,7 @@ pre[data-lang]::after {
   display: inline-block;
   color: var(--code-color);
 }
-
-/* add button-copy for code block */
-pre > span.copy-code {
-  position: absolute;
-  top: .25rem;
-  right: .25rem;
-  padding: .1rem .35rem;
-  display: inline-block;
-  color: var(--code-color-bg);
-  background-color: var(--code-color);
-  border: 1px solid var(--code-color);
-  border-radius: 4px;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
-  z-index: 99;
-}
-
-pre > span.copy-code:hover {
-  opacity: 1;
-}
+ */
 
 /* 图标 */
 .icon {

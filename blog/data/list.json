@@ -1,5 +1,21 @@
 [
   {
+    "title": "JS函数中的非简单参数",
+    "author": "wiskewu",
+    "categories": [
+      "web"
+    ],
+    "tags": [
+      "js",
+      "es6"
+    ],
+    "created": "2024-11-13T03:00:00.000Z",
+    "updated": null,
+    "top": false,
+    "summary": "从arguments.callee不恰当使用了解非简单参数概念",
+    "slug": "posts/2024-11-13-non-simple-parameters/index.html"
+  },
+  {
     "title": "Hello World",
     "author": "wiskewu",
     "categories": [

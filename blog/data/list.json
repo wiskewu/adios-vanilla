@@ -1,5 +1,22 @@
 [
   {
+    "title": "写一个简单的拉取项目模板web脚手架工具",
+    "author": "wiskewu",
+    "categories": [
+      "web"
+    ],
+    "tags": [
+      "js",
+      "cli",
+      "nodejs"
+    ],
+    "created": "2024-11-26T03:00:00.000Z",
+    "updated": null,
+    "top": false,
+    "summary": "使用脚手架和模板项目快速启动一个新项目开发",
+    "slug": "posts/2024-11-26-sample-web-cli-template/index.html"
+  },
+  {
     "title": "JS函数中的非简单参数",
     "author": "wiskewu",
     "categories": [

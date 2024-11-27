@@ -9,24 +9,25 @@
   /* footer高度 */
   --footer-height: 64px;
 }
-
+/* color from chinese tradition colors, @see https://colors.masantu.com/ */
 :root, html[data-theme=light] {
-  /* 文字主色 */
-  --primary-text-color: black;
-  /* 文字副色 */
-  --secondary-text-color: #404040;
-  /* 边框主色 */
-  --primary-border-color: #999999;
-  /* 背景主色 */
-  --primary-bg-color: #ffffff;
-  /* 背景副色 */
-  --secondary-bg-color: #f5f6f7;
-  /* 链接颜色 */
-  --primary-link-color: #6c9ee9;
+  /* 文字主色 百草霜 */
+  --primary-text-color: #303030;
+  /* 文字副色 粗晶皀 */
+  --secondary-text-color: #43454A;
+  /* 边框主色 隐红灰 */
+  --primary-border-color: #B598A1;
+  /* 背景主色 霜色 */
+  --primary-bg-color: #E9F1F6;
+  /* 背景副色 铅白 */
+  --secondary-bg-color: #F0F0F4;
+  /* 链接颜色 浅草绿 */
+  --primary-link-color: #057748;
 
-  /* 行内代码 */
-  --inline-code-color: #676767;
-  --inline-code-bg-color: #f0f4f9;
+  /* 行内代码字色 红皀 */
+  --inline-code-color: #4F5355;
+  /* 行内代码背景色 雪白 */
+  --inline-code-bg-color: #F2FDFF;
 
   /* note container color, color from: https://mdit-plugins.github.io/zh/alert.html#%E9%80%89%E9%A1%B9 */
   --note-info-title-color: #656869;
@@ -75,15 +76,23 @@
 }
 
 html[data-theme=dark] {
-  --primary-text-color: #c9d1d9;
-  --secondary-text-color: #878787;
-  --primary-border-color: #cfcfcf;
-  --primary-bg-color: #131315;
-  --secondary-bg-color: #1c1e21;
-  --primary-link-color: #6c9ee9;
+  /* 芡食白 */
+  --primary-text-color: #E2E1E4;
+  /* 苍白 */
+  --secondary-text-color: #D1D9E0;
+  /* 星灰 */
+  --primary-border-color: #B2BBBE;
+  /* 漆黑 */
+  --primary-bg-color: #161823;
+  /* 钢青 */
+  --secondary-bg-color: #142334;
+  /* 锈绿 */
+  --primary-link-color: #B8C8B7;
 
-  --inline-code-color: var(--primary-text-color);
-  --inline-code-bg-color: hsla(215,8%,47%,.4);
+  /* 淡藕合 */
+  --inline-code-color: #D5CCD3;
+  /* 承徳皀 */
+  --inline-code-bg-color: #5A5C5B;
 
   /* note container color, color from: https://mdit-plugins.github.io/zh/alert.html#%E9%80%89%E9%A1%B9 */
   --note-info-title-color: #939499;

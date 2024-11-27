@@ -274,7 +274,7 @@
     ],
     "tags": [
       "React",
-      "Hooks"
+      "hooks"
     ],
     "created": "2022-07-24T05:51:00.000Z",
     "updated": "2024-11-08T10:00:00.000Z",
@@ -283,19 +283,19 @@
     "slug": "posts/2022-07-24-a-complete-guide-to-useEffect/index.html"
   },
   {
-    "title": "React深入-useEffect完全指南",
+    "title": "Github访问加速",
     "author": "wiskewu",
     "categories": [
-      "web"
+      "internet"
     ],
     "tags": [
-      "React",
-      "hooks"
+      "github",
+      "hosts"
     ],
-    "created": "2022-07-24T05:51:00.000Z",
+    "created": "2022-07-23T05:51:00.000Z",
     "updated": "2024-11-08T10:00:00.000Z",
     "top": false,
-    "summary": "忘记你已经学到的，重新认识useEffect",
+    "summary": "通过修改本地hosts文件进行加速",
     "slug": "posts/2022-07-23-speed-up-github/index.html"
   },
   {

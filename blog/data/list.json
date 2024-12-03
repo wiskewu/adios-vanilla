@@ -1,5 +1,21 @@
 [
   {
+    "title": "pnpm link 简单使用",
+    "author": "wiskewu",
+    "categories": [
+      "web"
+    ],
+    "tags": [
+      "js",
+      "development"
+    ],
+    "created": "2024-12-03T06:00:00.000Z",
+    "updated": null,
+    "top": false,
+    "summary": "使用pnpm link进行本地库跨项目调试",
+    "slug": "posts/2024-12-03-pnpm-link-usage/index.html"
+  },
+  {
     "title": "写一个简单的拉取项目模板web脚手架工具",
     "author": "wiskewu",
     "categories": [

@@ -1,0 +1,146 @@
+<mxfile host="Electron" modified="2024-12-13T09:22:02.183Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.2.5 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="YPboCyMTBTQK2PJYSpiT" version="24.2.5" type="device">
+  <diagram name="第 1 页" id="IkJ2M4vL0P_0FMgDFeti">
+    <mxGraphModel dx="1886" dy="907" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="lzVRNSFVxuYegRf3K7hI-3" target="lzVRNSFVxuYegRf3K7hI-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-3" value="工具库Lib" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="230" width="76" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-4" value="应用App" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="420" width="76" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-7" value="测试服务器" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1390" y="820" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.875;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="lzVRNSFVxuYegRf3K7hI-8" target="lzVRNSFVxuYegRf3K7hI-55">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-8" value="Jenkins" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="820" width="340" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-48" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="lzVRNSFVxuYegRf3K7hI-9" target="lzVRNSFVxuYegRf3K7hI-12">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="730" y="530" />
+              <mxPoint x="880" y="530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-9" value="确定阶段性版本号并固定&lt;br&gt;eg: 1.0.0-alpha.2025" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="630" y="370" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="lzVRNSFVxuYegRf3K7hI-12" target="lzVRNSFVxuYegRf3K7hI-4">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1090" y="420" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1120" y="570" />
+              <mxPoint x="970" y="570" />
+              <mxPoint x="970" y="360" />
+              <mxPoint x="1088" y="360" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-12" value="根据依赖名称和版本号更新私有npm地址&lt;br&gt;pnpm add http://your.registry:port/repository/npm-public/lib/-/lib-1.0.0-alpha.2025.tgz" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="660" width="480" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-63" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.55;exitY=0.95;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;" edge="1" parent="1" source="lzVRNSFVxuYegRf3K7hI-15" target="lzVRNSFVxuYegRf3K7hI-58">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="637" y="770" />
+              <mxPoint x="1170" y="770" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-64" value="根据依赖的url下载最新的包内容" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="lzVRNSFVxuYegRf3K7hI-63">
+          <mxGeometry x="0.0015" y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-15" value="npm/nexus注册源&lt;br&gt;http://your.registry:port/repository/npm-public/" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="640" width="340" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="lzVRNSFVxuYegRf3K7hI-18" target="lzVRNSFVxuYegRf3K7hI-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-18" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="30" y="520" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-53" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="lzVRNSFVxuYegRf3K7hI-21" target="lzVRNSFVxuYegRf3K7hI-52">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-21" value="修改代码，固定版本号重新发布替换注册源上的包" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="520" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-26" value="Git仓库服务器" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1446" y="300" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.07;entryY=0.4;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="lzVRNSFVxuYegRf3K7hI-3" target="lzVRNSFVxuYegRf3K7hI-26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.13;entryY=0.77;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="lzVRNSFVxuYegRf3K7hI-4" target="lzVRNSFVxuYegRf3K7hI-26">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1286" y="460" />
+              <mxPoint x="1286" y="362" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="lzVRNSFVxuYegRf3K7hI-3" target="lzVRNSFVxuYegRf3K7hI-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-35" value="APP依赖工具库Lib" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="lzVRNSFVxuYegRf3K7hI-34">
+          <mxGeometry y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.625;entryY=0.2;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="lzVRNSFVxuYegRf3K7hI-9" target="lzVRNSFVxuYegRf3K7hI-15">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="730" y="530" />
+              <mxPoint x="663" y="530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-49" value="发布" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="lzVRNSFVxuYegRf3K7hI-42">
+          <mxGeometry x="-0.6755" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.625;entryY=0.2;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="lzVRNSFVxuYegRf3K7hI-21" target="lzVRNSFVxuYegRf3K7hI-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-52" value="触发联编" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="720" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-54" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.16;entryY=0.55;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="lzVRNSFVxuYegRf3K7hI-52" target="lzVRNSFVxuYegRf3K7hI-8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="215" y="864" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="lzVRNSFVxuYegRf3K7hI-55" target="lzVRNSFVxuYegRf3K7hI-58">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-55" value="拉取APP代码" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="840" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-58" value="安装依赖&lt;br&gt;pnpm install" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="840" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.16;entryY=0.55;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="lzVRNSFVxuYegRf3K7hI-58" target="lzVRNSFVxuYegRf3K7hI-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lzVRNSFVxuYegRf3K7hI-62" value="打包出最新代码" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="lzVRNSFVxuYegRf3K7hI-61">
+          <mxGeometry x="-0.2795" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,5 +1,21 @@
 [
   {
+    "title": "权限控制下的多项目调试与打包联编",
+    "author": "wiskewu",
+    "categories": [
+      "web"
+    ],
+    "tags": [
+      "jenkins",
+      "bundle"
+    ],
+    "created": "2024-12-13T07:49:16.000Z",
+    "updated": null,
+    "top": false,
+    "summary": "了解在不同权限控制下，A同学开发库如何自动编译到B同学开发的应用中并部署到测试环境上进行验证",
+    "slug": "posts/2024-12-13-multi-project-build-and-test/index.html"
+  },
+  {
     "title": "pnpm link 简单使用",
     "author": "wiskewu",
     "categories": [

@@ -1,0 +1,1582 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="Adiós's independent blog" />
+    <meta name="description" content="Adiós的个人博客网站" />
+    <meta name="author" content="wiskewu & 还没想好名字" />
+    <link rel="icon" sizes="any" href="/adios-vanilla/assets/images/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/adios-vanilla/assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/adios-vanilla/assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/adios-vanilla/assets/images/favicon-16x16.png" />
+    <title>基于Namespace的代码结构 - 守望·Adiós</title>
+    <style>
+:root {
+  --c-bg: #F5F2ED; 
+  --c-bg-secondary: #EBE7DF; 
+
+  --c-text-title: #33332D; 
+  --c-text-light: #595652; 
+  --c-text-muted: #9E9992; 
+
+  --c-brand: #7B856D; 
+  
+  --c-border: #DCDCDC; 
+
+  --c-scrollbar-thumb: #C2BAA6;
+  --c-scrollbar-track: #F5F2ED;
+
+  --font-mono: Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --sidebar-gap: 2rem;
+  
+  --sidebar-width: 240px;
+  --sidebar-toc-width: 240px;
+  --content-max-width: 800px;
+  --w-scrollbar: 8px;
+
+  
+--c-bg-hint: rgb(16 185 129 / 14%);
+--c-text-hint: #18794e;
+--c-border-hint: #30a46c;
+
+--c-bg-warning: rgb(234 179 8 / 14%);
+--c-text-warning: #915930;
+--c-border-waring: #c28100;
+
+--c-bg-details: rgba(142, 150, 170, .1);
+--c-text-details: ;
+--c-border-details: ;
+
+--c-bg-note: rgb(142 150 170 / 14%);
+--c-text-note: #656869;
+--c-border-note: #ebebef;
+;
+  
+--c-bg-tab: #fff;
+--c-bg-tab-header: #ebebef;
+--c-bg-hover-tab: rgba(142, 150, 170, .16);
+--r-radius-tab: .5rem;
+;
+  
+--c-sk-diff-add: #18794e;
+--c-sk-diff-remove: #b34e52;
+
+
+--c-bg-sk-highlight: rgba(142, 150, 170, .14);
+
+
+--c-bg-sk-error-level: rgba(244, 63, 94, .14);
+--c-bg-sk-warn-level: rgba(234, 179, 8, .14);
+;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+--c-bg: #1B1B1A;
+--c-bg-secondary: #262624;
+
+--c-text-title: #D4D1CA;
+--c-text-light: #A6A29A;
+--c-text-muted: #6B6862;
+
+--c-brand: #8B947E;
+
+--c-border: #333331;
+
+--c-scrollbar-thumb: #444442;
+--c-scrollbar-track: #1B1B1A;
+
+
+--c-bg-hint: rgb(16 185 129 / 16%);
+--c-text-hint: #3dd68c;
+--c-border-hint: #298459;
+
+--c-bg-warning: rgb(234 179 8 / 16%);
+--c-text-warning: #f9b44e;
+--c-border-waring: #298459;
+
+--c-bg-details: rgba(101, 117, 133, .12);
+--c-text-details: ;
+--c-border-details: ;
+
+--c-bg-note: rgb(101 117 133 / 16%);
+--c-text-note: #939499;
+--c-border-note: #32363f;
+;
+
+--c-bg-tab: #1b1b1f;
+--c-bg-tab-header: #32363f;
+--c-bg-hover-tab: rgba(101, 117, 133, .18);
+;
+
+--c-sk-diff-add: #cb7676;
+--c-sk-diff-remove: #cb7676;
+
+
+--c-bg-sk-highlight: rgba(101, 117, 133, .16);
+
+
+--c-bg-sk-error-level: rgba(244, 63, 94, .16);
+--c-bg-sk-warn-level: rgba(234, 179, 8, .16);
+;
+}
+}
+:root[data-theme="dark"] {
+--c-bg: #1B1B1A;
+--c-bg-secondary: #262624;
+
+--c-text-title: #D4D1CA;
+--c-text-light: #A6A29A;
+--c-text-muted: #6B6862;
+
+--c-brand: #8B947E;
+
+--c-border: #333331;
+
+--c-scrollbar-thumb: #444442;
+--c-scrollbar-track: #1B1B1A;
+
+
+--c-bg-hint: rgb(16 185 129 / 16%);
+--c-text-hint: #3dd68c;
+--c-border-hint: #298459;
+
+--c-bg-warning: rgb(234 179 8 / 16%);
+--c-text-warning: #f9b44e;
+--c-border-waring: #298459;
+
+--c-bg-details: rgba(101, 117, 133, .12);
+--c-text-details: ;
+--c-border-details: ;
+
+--c-bg-note: rgb(101 117 133 / 16%);
+--c-text-note: #939499;
+--c-border-note: #32363f;
+;
+
+--c-bg-tab: #1b1b1f;
+--c-bg-tab-header: #32363f;
+--c-bg-hover-tab: rgba(101, 117, 133, .18);
+;
+
+--c-sk-diff-add: #cb7676;
+--c-sk-diff-remove: #cb7676;
+
+
+--c-bg-sk-highlight: rgba(101, 117, 133, .16);
+
+
+--c-bg-sk-error-level: rgba(244, 63, 94, .16);
+--c-bg-sk-warn-level: rgba(234, 179, 8, .16);
+;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  .shiki,
+  .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
+}
+
+[data-theme="dark"] .shiki,
+[data-theme="dark"] .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+
+pre.shiki {
+  counter-reset: line;
+}
+pre.shiki .line {
+  position: relative;
+}
+pre.shiki .line::after {
+  content: counter(line);
+  counter-increment: line;
+  position: absolute;
+  left: -24px;
+  width: 24px;
+  text-align: center;
+  user-select: none;
+  color: var(--c-text-muted);
+}
+
+
+/* Global Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+/* scrollbar style */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-scrollbar-thumb) var(--c-scrollbar-track);
+}
+::-webkit-scrollbar {
+  width: var(--w-scrollbar);
+  height: var(--w-scrollbar);
+}
+::-webkit-scrollbar-track {
+  background: var(--c-scrollbar-track);
+  border-radius: calc(--w-scrollbar * 0.5);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--c-scrollbar-thumb);
+  border-radius: calc(--w-scrollbar * 0.5);
+}
+/* Body & Global */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background-color: var(--c-bg);
+  background-image:
+    linear-gradient(to right, var(--c-border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--c-border) 1px, transparent 1px);
+  background-size: 2.5rem 2.5rem;
+  background-attachment: fixed;
+  background-position: center center;
+  color: var(--c-text-title);
+  line-height: 1.7;
+  font-size: 16px;
+}
+/* Typography */
+h1 { font-size: 2.5rem; line-height: 1.3; letter-spacing: -0.02em; }
+h2 { font-size: 2.25rem; border-bottom: 1px solid var(--c-border); padding-bottom: 0.5rem; }
+h3 { font-size: 1.875rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1rem; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  overflow-wrap: break-word;
+}
+
+/* Links */
+a {
+  color: var(--c-text-light);
+  text-decoration: none;
+}
+a:hover { border-color: var(--c-brand); }
+/* Code */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background-color: var(--c-bg-secondary);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
+pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  padding: 1rem 0;
+  border-radius: 4px;
+  overflow-x: auto;
+  word-wrap: break-word;
+  background-color: var(--c-bg-secondary);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+}
+/* Blockquote */
+blockquote {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-left: 4px solid var(--c-brand);
+  color: var(--c-text-light);
+  font-style: italic;
+  background-color: color-mix(in srgb, var(--c-brand) 5%, transparent);
+  border-radius: 0 4px 4px 0;
+}
+/* Images */
+img {
+  max-width: 100%;
+  margin: 1.5rem auto;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s;
+}
+
+img:hover {
+  transform: scale(1.01);
+}
+/* Forms */
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--c-border);
+  border-radius: 5px;
+  background-color: var(--c-bg);
+  color: var(--c-text-title);
+  cursor: pointer;
+}
+
+button:hover, input:hover, select:hover, textarea:hover {
+  background-color: var(--c-bg-secondary);
+}
+
+button:disabled, input:disabled, select:disabled, textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+figure figcaption {
+  text-align: center;
+}
+figure img {
+  display: block;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  img, video { opacity: 0.8; }
+  pre { box-shadow: none; }
+  pre code { color: color-mix(in srgb, var(--c-text-title) 80%, transparent); }
+}
+
+
+@media only screen and (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+  h4 { font-size: 1.25rem; }
+  h5 { font-size: 1.125rem; }
+}
+
+@media only screen and (max-width: 480px) {
+  h1 { font-size: 1.75rem; }
+}
+
+</style>
+<style>
+.bc {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+  padding-top: 0;
+}
+
+.bn {
+  width: var(--sidebar-width);
+  position: fixed;
+  height: 100vh;
+  left: var(--sidebar-gap);
+  border-right: 1px solid var(--c-border);
+  backdrop-filter: blur(10px);
+  background-color: color-mix(in srgb, var(--c-bg) 80%, transparent);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s;
+  z-index: 10;
+}
+
+.bn.bn-a {
+  transform: translateX(0);
+}
+
+.bm-wa {
+  flex: 1;
+  min-width: 0;
+  margin-left: calc(var(--sidebar-width) + var(--sidebar-gap) * 2);
+  margin-right: calc(var(--sidebar-toc-width) + var(--sidebar-gap));
+  transition: margin-right 0.3s;
+}
+
+.bm-na {
+  flex: 1;
+  margin-left: calc(var(--sidebar-width) + var(--sidebar-gap) * 2);
+  margin-right: var(--sidebar-gap);
+}
+
+ .bmc {
+  display: flow-root;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+}
+
+  .baw {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  width: var(--sidebar-toc-width);
+  z-index: 99;
+  transition: transform 0.3s;
+}
+
+.ba {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  overflow-y: auto;
+  border-left: 1px solid var(--c-border);
+  backdrop-filter: blur(10px);
+  background-color: color-mix(in srgb, var(--c-bg) 80%, transparent);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s;
+}
+
+ .bat {
+  position: absolute;
+  left: -2.5rem;
+  top: 2rem;
+  width: 2rem;
+  height: 2rem;
+  background-color: var(--c-bg);
+  border: 1px solid var(--c-border);
+  padding: 0;
+  border-radius: 4px;
+  color: var(--c-text-light);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.bc.bah .bm-wa {
+  margin-right: var(--sidebar-gap);
+}
+.bc.bah .baw {
+  transform: translateX(100%);
+}
+
+
+
+@media (max-width: 1200px) {
+  .bn {
+    left: 0;
+  }
+  .bm-wa,
+  .bm-na {
+    margin-left: calc(var(--sidebar-width) + var(--sidebar-gap));
+    margin-right: var(--sidebar-gap);
+  }
+}
+
+@media (max-width: 768px) {
+  .bc {
+    padding-top: 50px;
+    width: 100%;
+  }
+
+  .bn {
+    transform: translateX(-100%);
+    left: 0;
+    top: 0;
+    padding-top: 50px;
+    width: 80%;
+    max-width: 280px;
+    z-index: 150;
+  }
+
+  .bm-wa,
+  .bm-na {
+    margin-left: var(--sidebar-gap);
+    margin-right: var(--sidebar-gap);
+  }
+
+  .baw {
+    padding-top: 50px;
+    z-index: 150;
+    width: 80%;
+    max-width: 300px;
+  }
+
+  .bat {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .bm-wa,
+  .bm-na {
+    margin-left: calc(var(--sidebar-gap) * 0.5) !important;
+    margin-right: calc(var(--sidebar-gap) * 0.5) !important;
+  }
+}
+</style>
+<style>
+ .hb {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0.5rem 1rem;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--c-border);
+  background-color: var(--c-bg);
+  width: 100%;
+  height: 50px;
+  z-index: 200;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.hb-btn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  border: none;
+  background: none;
+  color: var(--c-text-title);
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.hb-t {
+  flex: 1;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+  color: var(--c-text-title);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+@media (max-width: 768px) {
+  .hb {
+    display: flex;
+  }
+}
+</style>
+<style>
+  .ico {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+  .ico.ico-success {
+    color: var(--c-brand);
+  }
+
+</style>
+<style>
+.ns {
+  padding: 1rem;
+}
+
+ .ns-t {
+  border-bottom: 1px solid var(--c-border);
+  background-color: var(--c-bg);
+}
+
+.ns-b {
+  padding: 0 1rem;
+  border-top: 1px solid var(--c-border);
+  background-color: var(--c-bg);
+}
+
+.ns-m {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 1rem;
+}
+
+.nl {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: var(--c-text-title);
+  letter-spacing: 0.05em;
+}
+
+.nt {
+  margin: 0 0 1rem 0;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  color: var(--c-text-light);
+}
+
+.nfi p {
+  color: var(--c-text-muted);
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.nfi a:hover {
+  color: var(--c-brand);
+}
+
+.nln {
+  display: block;
+  color: var(--c-text-title);
+  border-bottom: none;
+  margin-bottom: 0.25rem;
+}
+
+.nln:hover {
+  color: var(--c-brand);
+  padding-left: 0.25rem;
+}
+
+.nln-a {
+  color: var(--c-brand);
+  font-weight: 600;
+  padding-left: 0.5rem;
+  border-radius: 5px;
+  border-left: 2px solid var(--c-brand);
+}
+
+.nfb {
+  display: flex;
+  justify-content: end;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.nfb-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border: none;
+  background: transparent;
+  color: var(--c-text-light);
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+}
+
+.nfb-btn:hover {
+  color: var(--c-brand);
+  background-color: var(--c-bg-secondary);
+}
+
+</style>
+<style>
+.npl-c {}
+
+ .npl-t {
+  padding-left: 0.5rem;
+}
+
+.npl-d {
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+  color: var(--c-text-title);
+}
+
+ .npl-s {
+  cursor: pointer;
+  color: var(--c-text-title);
+}
+
+.npl-s:hover {
+  color: var(--c-brand);
+}
+
+.npl-l {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.npl-i {
+  padding-left: 1rem;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.npl-i svg {
+  flex-shrink: 0;
+}
+
+.npl-ln {
+  display: block;
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+.npl-ln:hover {
+  padding-left: 0.25rem;
+}
+
+.npl-i.npl-ln-c .npl-ln {
+  color: var(--c-brand);
+  font-weight: 600;
+  padding-left: 0.75rem;
+  border-radius: 5px;
+  border-left: 2px solid var(--c-brand);
+}
+
+.npl-i.npl-ln-c svg {
+  color: var(--c-brand);
+}
+
+</style>
+<style>
+.bmc:has(.art h1) .tc {
+  display: none;
+}
+ .tc {
+  margin-bottom: 1.5rem;
+  color: var(--c-text-title);
+}
+
+</style>
+<style>
+ .mc {
+  color: var(--c-text-light);
+  font-size: 0.875rem;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+  border-bottom: 1px solid var(--c-border);
+}
+
+ .mi {
+   margin-right: 1.5rem;
+   display: inline-flex;
+   align-items: center;
+   gap: 0.375rem;
+ }
+
+ .m-i {
+   flex-shrink: 0;
+   color: var(--c-text-light);
+ }
+
+.mi:last-child {
+  margin-right: 0;
+}
+
+ .mt {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  background-color: var(--c-bg-secondary);
+  border-radius: 3px;
+  margin-right: 0.5rem;
+  color: var(--c-text-title);
+}
+
+.mt:hover {
+  background-color: var(--c-brand);
+  color: var(--c-bg);
+}
+
+</style>
+<style>
+.art {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+}
+.art h1 a,
+.art h2 a,
+.art h3 a,
+.art h4 a,
+.art h5 a,
+.art h6 a
+ {
+  text-decoration: none;
+}
+.art a {
+  text-decoration: underline;
+  margin: 0 0.25rem;
+}
+
+</style>
+<style>
+.tc {
+  margin-bottom: 1.5rem;
+}
+
+.tt {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--c-text-title);
+  letter-spacing: 0.05em;
+}
+nav.toc-container ul {
+  list-style-type: none;
+  padding-inline-start: 1rem;
+}
+nav.toc-container ul li {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+</style>
+    <style>.markdown-alert{padding:8px 16px;margin-bottom:16px;color:inherit;border-left:.25em solid}.markdown-alert>:first-child{margin-top:0}.markdown-alert>:last-child{margin-bottom:0}.markdown-alert .markdown-alert-title{display:flex;font-weight:var(--base-text-weight-medium, 500);align-items:center;position:relative}.markdown-alert .markdown-alert-title:before{content:" ";width:16px;height:16px;margin-right:8px;background-position:left;background-repeat:no-repeat}@media print{.markdown-alert .markdown-alert-title:before{display:none}}.markdown-alert.markdown-alert-note{border-left-color:#2f81f7}.markdown-alert.markdown-alert-note .markdown-alert-title{color:#2f81f7}.markdown-alert.markdown-alert-note .markdown-alert-title:before{background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%232f81f7' d='M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z'/%3E%3C/svg%3E")}.markdown-alert.markdown-alert-important{border-left-color:#a371f7}.markdown-alert.markdown-alert-important .markdown-alert-title{color:#a371f7}.markdown-alert.markdown-alert-important .markdown-alert-title:before{background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23a371f7' d='M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z'/%3E%3C/svg%3E")}.markdown-alert.markdown-alert-tip{border-left-color:#3fb950}.markdown-alert.markdown-alert-tip .markdown-alert-title{color:#3fb950}.markdown-alert.markdown-alert-tip .markdown-alert-title:before{background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%233fb950' d='M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z'/%3E%3C/svg%3E")}.markdown-alert.markdown-alert-warning{border-left-color:#d29922}.markdown-alert.markdown-alert-warning .markdown-alert-title{color:#d29922}.markdown-alert.markdown-alert-warning .markdown-alert-title:before{background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23d29922' d='M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z'/%3E%3C/svg%3E")}.markdown-alert.markdown-alert-caution{border-left-color:#f85149}.markdown-alert.markdown-alert-caution .markdown-alert-title{color:#f85149}.markdown-alert.markdown-alert-caution .markdown-alert-title:before{background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23f85149' d='M4.47.22A.749.749 0 0 1 5 0h6c.199 0 .389.079.53.22l4.25 4.25c.141.14.22.331.22.53v6a.749.749 0 0 1-.22.53l-4.25 4.25A.749.749 0 0 1 11 16H5a.749.749 0 0 1-.53-.22L.22 11.53A.749.749 0 0 1 0 11V5c0-.199.079-.389.22-.53Zm.84 1.28L1.5 5.31v5.38l3.81 3.81h5.38l3.81-3.81V5.31L10.69 1.5ZM8 4a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z'/%3E%3C/svg%3E")}
+
+
+.custom-container {
+  position: relative;
+  margin: .85rem 0;
+  padding: .25rem 1rem;
+  border-radius: .5rem;
+}
+.custom-container.cc-warning {
+  background: var(--c-bg-warning);
+}
+.custom-container.cc-hint {
+  background: var(--c-bg-hint);
+  border-inline-start-width: .3rem;
+  border-inline-start-style: solid;
+  border-color: var(--c-border-hint);
+}
+.custom-container.cc-details {
+  background: var(--c-bg-details);
+}
+.custom-container.cc-note {
+  background: var(--c-bg-note);
+}
+
+.custom-container.cc-warning .cc-title {
+  color: var(--c-text-warning);
+}
+.custom-container.cc-hint .cc-title {
+  color: var(--c-text-hint);
+}
+.custom-container.cc-details .cc-title {
+  color: var(--c-text-details);
+}
+.custom-container.cc-note .cc-title {
+  color: var(--c-text-note);
+}
+
+.spoiler{background-color:currentColor;border-radius:.2em;transition:background ease .5s;cursor:help}.spoiler:not(:hover) *{background-color:inherit;color:inherit}.spoiler:hover,.spoiler:focus{background-color:transparent}
+
+
+.tabs-tabs-wrapper {
+  margin: 1.5rem 0px;
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-radius-tab);
+  background: var(--c-bg-tab);
+}
+.tabs-tabs-header {
+  overflow-x: auto;
+  margin: 0px;
+  padding: 0px;
+  border-radius: var(--r-radius-tab) var(--r-radius-tab) 0 0;
+  background: var(--c-bg-tab-header);
+  list-style: none;
+  white-space: nowrap;
+  transition: background .3s ease;
+}
+button.tabs-tab-button {
+  position: relative;
+  min-width: 4rem;
+  font-weight: 600;
+  font-size: 0.875em;
+  line-height: 1.75;
+  cursor: pointer;
+  margin: 0px;
+  padding: 0.5em 1em;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  background: transparent;
+  border-radius: var(--r-radius-tab) var(--r-radius-tab) 0 0;
+  transition: background .3s ease, color .3s ease;
+}
+button.tabs-tab-button.active {
+  background: var(--c-bg-tab);
+}
+
+.tabs-tabs-container {
+  display: flow-root;
+}
+.tabs-tabs-container .tabs-tab-content {
+  padding: 1rem 0.75rem;
+  display: none;
+}
+.tabs-tabs-container .tabs-tab-content.active {
+  display: block;
+}
+
+
+code[class*="language-"] {
+  display: block;
+  padding: 0 24px;
+  width: fit-content;
+  min-width: 100%;
+}
+code[class*="language-"] .diff {
+  width: calc(100% + 48px);
+  display: inline-block;
+  transition: background-color 0.5s;
+  margin: 0px -24px;
+  padding: 0px 24px;
+}
+
+code[class*="language-"] .diff.remove {
+  opacity: 0.7;
+}
+code[class*="language-"] .diff::before {
+  left: 10px;
+  position: absolute;
+}
+code[class*="language-"] .diff.remove::before {
+  content: "-";
+  color: var(--c-sk-diff-remove);
+}
+code[class*="language-"] .diff.add::before {
+  content: "+";
+  color: var(--c-sk-diff-add);
+}
+
+
+code[class*="language-"] .highlighted {
+  background-color:var(--c-bg-sk-highlight);
+  width: calc(100% + 48px);
+  display: inline-block;
+  transition: background-color 0.5s;
+  margin: 0px -24px;
+  padding: 0px 24px;
+}
+code[class*="language-"] .line.highlighted::after {
+  left: 0;
+}
+
+
+code[class*="language-"] .highlighted-word {
+  border: 1px solid var(--c-border);
+  padding: 1px 3px;
+  margin: -1px -3px;
+  border-radius: 4px;
+}
+
+
+pre.has-focused code[class*="language-"] .line:not(.focused) {
+  opacity: .7;
+  transition: filter .35s, opacity .35s;
+  filter: blur(.095rem);
+}
+  pre.has-focused:hover code[class*="language-"] .line:not(.focused) {
+  opacity: 1;
+  filter: blur(0);
+}
+
+
+code[class*="language-"] .highlighted.error {
+  background-color:var(--c-bg-sk-error-level);
+  width: calc(100% + 48px);
+  display: inline-block;
+  transition: background-color 0.5s;
+  margin: 0px -24px;
+  padding: 0px 24px;
+}
+code[class*="language-"] .highlighted.warning {
+  background-color:var(--c-bg-sk-warn-level);
+  width: calc(100% + 48px);
+  display: inline-block;
+  transition: background-color 0.5s;
+  margin: 0px -24px;
+  padding: 0px 24px;
+}
+
+
+pre.shiki .indent {
+  display: inline-block;
+  position: relative;
+  left: var(--indent-offset);
+}
+
+pre.shiki .indent:empty {
+  height: 1lh;
+  vertical-align: bottom;
+}
+
+pre.shiki .indent::before {
+  content: '';
+  position: absolute;
+  opacity: 0.15;
+  width: 1px;
+  height: 100%;
+  background-color: currentColor;
+}
+
+
+.codeblock {
+  position: relative;
+  margin: 1rem 0;
+}
+.codeblock .codecopy {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  border: 1px solid var(--c-border);
+  opacity: 0;
+  cursor: pointer;
+  transition: border-color .25s, background-color .25s, opacity .25s;
+}
+.codeblock .codelang {
+  position: absolute;
+  top: 2px;
+  right: 8px;
+  z-index: 2;
+  font-size: 0.75rem;
+  font-weight: 500;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: color .4s, opacity .4s;
+}
+.codeblock > pre {
+  z-index: 1;
+  margin: 0;
+  padding: 1rem 0;
+}
+.codeblock:hover .codecopy {
+  opacity: 1;
+}
+.codeblock:hover .codelang {
+  opacity: 0;
+}
+</style>
+    <style>.__sk__2zefwf{color:#D73A49;--shiki-dark:#F97583}.__sk__26r52b{color:#24292E;--shiki-dark:#E1E4E8}.__sk__1w1f48{color:#032F62;--shiki-dark:#9ECBFF}.__sk__1iv3gc{color:#6F42C1;--shiki-dark:#B392F0}.__sk__18al46{color:#005CC5;--shiki-dark:#79B8FF}.__sk__26ewvm{color:#E36209;--shiki-dark:#FFAB70}.__sk__18d7xz{background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8}.__sk__3vhiq7{color:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold}.__sk__215wbj{color:#24292E;--shiki-light-font-weight:bold;--shiki-dark:#E1E4E8;--shiki-dark-font-weight:bold}.__sk__25k1wy{color:#6A737D;--shiki-dark:#6A737D}.__sk__21l1ib{color:#22863A;--shiki-dark:#85E89D}</style>
+  </head>
+  <body>
+    <header role="banner" class="hb"><button type="button" aria-label="Toggle Menu" class="hb-btn"><svg class="ico" width="24" height="24" fill="currentColor"><use href="#icon-home"></use></svg></button><strong class="hb-t">基于Namespace的代码结构</strong><button type="button" aria-label="Toggle TOC" class="hb-btn"><svg class="ico" width="24" height="24" fill="currentColor"><use href="#icon-toc"></use></svg></button></header><svg style="display:none;"><defs><symbol id="icon-theme-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></symbol><symbol id="icon-theme-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol><symbol id="icon-theme-system" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol><symbol id="icon-back-to-top" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></symbol><symbol id="icon-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol><symbol id="icon-toc" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></symbol><symbol id="icon-published-time" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol><symbol id="icon-updated-time" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol><symbol id="icon-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></symbol><symbol id="icon-author" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol><symbol id="icon-friend-links" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol><symbol id="icon-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol><symbol id="icon-sticky-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></symbol><symbol id="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol><symbol id="icon-copy-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/><polyline points="12 15 15 18 20 13"/></symbol></defs></svg><div class="bc"><aside class="bn"><div class="ns ns-t"><h3 class="nt">守望·Adiós</h3><nav><a href="/adios-vanilla/" class="nln">Home</a><a href="/adios-vanilla/posts/index.html" class="nln">Posts</a><a href="/adios-vanilla/about.html" class="nln">About</a><a href="/adios-vanilla/friends.html" class="nln">Friends</a></nav></div><div class="ns-m"><div class="npl-c"><h4 class="npl-t"><a href="/adios-vanilla/posts/index.html" class="npl-ln">文章归档</a></h4><details class="npl-d" name="archive2026" open="true"><summary class="npl-s">2026</summary><ul class="npl-l"><li class="npl-i npl-ln-c"><a href="/adios-vanilla/posts/2026/2026-01-20_namespace_based_code_organization.html" class="npl-ln">基于Namespace的代码结构</a></li><li class="npl-i"><a href="/adios-vanilla/posts/2026/2026-01-20_@media_hover_and_pointer.html" class="npl-ln">通过媒体查询精确控制鼠标在元素上的悬停样式</a></li><li class="npl-i"><a href="/adios-vanilla/posts/2026/2026-01-08_git_bash_on_windows_terminal.html" class="npl-ln">配置Git Bash作为Windows Terminal选项</a></li><li class="npl-i"><a href="/adios-vanilla/posts/2026/2026-01-08_install_opencode_on_windows.html" class="npl-ln">windows安装opencode启动失败解决办法</a></li><li class="npl-i"><a href="/adios-vanilla/posts/2026/2026-01-06_双仓库GithubActions部署博客.html" class="npl-ln">双仓库GithubActions部署博客</a></li><li class="npl-i"><a href="/adios-vanilla/posts/2026/2026-01-05_杀死一只鸟儿.html" class="npl-ln">杀死一只鸟儿</a></li><li class="npl-i"><a href="/adios-vanilla/posts/2026/2026-01-05_hello_world.html" class="npl-ln">Hello World</a></li></ul></details></div></div><div class="ns-b"><div class="nfi"><div class="nfb"><button class="nfb-btn" data-action="theme-toggle" aria-label="切换主题"><svg class="ico" width="20" height="20" fill="currentColor" data-icon-id="theme-icon"><use href="#icon-theme-light"></use></svg></button><button class="nfb-btn" data-action="back-to-top" aria-label="回到顶部"><svg class="ico" width="20" height="20" fill="currentColor"><use href="#icon-back-to-top"></use></svg></button></div><p>Base on <abbr title="Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License">CC BY-NC 4.0</abbr><br /> ©2025-Now wiskewu</p></div></div></aside><main class="bm-wa"><div class="bmc"><h1 class="tc">基于Namespace的代码结构</h1><div class="mc"><span class="mi"><svg class="ico" width="16" height="16" fill="currentColor" data-icon-id="m-i"><use href="#icon-published-time"></use></svg>发布于 <time datetime="2026-01-20T17:13:14+08:00" data-format="YYYY-MM-DD">2026-01-20T17:13:14+08:00</time></span><div style="margin-top:0.5rem;display:flex;align-items:center;gap:0.5rem;"><svg class="ico" width="16" height="16" fill="currentColor" data-icon-id="m-i"><use href="#icon-tag"></use></svg><span class="mt">Typescript</span></div></div><article class="art"><h1 id="%E5%9F%BA%E4%BA%8Enamespace%E7%9A%84%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84" tabindex="-1"><a class="header-anchor" href="#%E5%9F%BA%E4%BA%8Enamespace%E7%9A%84%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84">基于Namespace的代码结构</a></h1>
+<p>在发现并排查 <a href="https://github.com/anomalyco/opencode/issues/7896">Issue-7896</a> 时，拉取项目<a href="https://github.com/anomalyco/opencode">opencode</a>源代码进行调试，发现<code>opencode</code>源码中大量用到<code>namespace</code>关键字进行代码结构的组织管理。</p>
+<p>如<a href="https://github.com/anomalyco/opencode/blob/616329ae97c975f21687f6c8c9c6d4d8018e6fd9/packages/opencode/src/env/index.ts">packages/opencode/src/env/index.ts</a>中，文件的代码如下：</p>
+
+      <div class="codeblock" data-lang="ts">
+      
+        <button title="Copy" class="codecopy"><svg class="ico" width="24" height="24" fill="currentColor"><use href="#icon-copy"></use></svg></button>
+      
+      <span data-lang="ts" class="codelang">ts</span>
+      <pre class="shiki shiki-themes github-light github-dark __sk__18d7xz" tabindex="0"><code class="language-ts"><span class="line"><span class="__sk__2zefwf">import</span><span class="__sk__26r52b"> { Instance } </span><span class="__sk__2zefwf">from</span><span class="__sk__1w1f48"> "../project/instance"</span></span>
+<span class="line"></span>
+<span class="line"><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> Env</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">const</span><span class="__sk__18al46"> state</span><span class="__sk__2zefwf"> =</span><span class="__sk__26r52b"> Instance.</span><span class="__sk__1iv3gc">state</span><span class="__sk__26r52b">(() </span><span class="__sk__2zefwf">=></span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">return</span><span class="__sk__26r52b"> process.env </span><span class="__sk__2zefwf">as</span><span class="__sk__1iv3gc"> Record</span><span class="__sk__26r52b">&#x3C;</span><span class="__sk__18al46">string</span><span class="__sk__26r52b">, </span><span class="__sk__18al46">string</span><span class="__sk__2zefwf"> |</span><span class="__sk__18al46"> undefined</span><span class="__sk__26r52b">></span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">})</span></span>
+<span class="line"><span class="indent" style="--indent-offset: 0ch;"></span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> get</span><span class="__sk__26r52b">(</span><span class="__sk__26ewvm">key</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> string</span><span class="__sk__26r52b">) {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">const</span><span class="__sk__18al46"> env</span><span class="__sk__2zefwf"> =</span><span class="__sk__1iv3gc"> state</span><span class="__sk__26r52b">()</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">return</span><span class="__sk__26r52b"> env[key]</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="indent" style="--indent-offset: 0ch;"></span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> all</span><span class="__sk__26r52b">() {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">return</span><span class="__sk__1iv3gc"> state</span><span class="__sk__26r52b">()</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="indent" style="--indent-offset: 0ch;"></span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> set</span><span class="__sk__26r52b">(</span><span class="__sk__26ewvm">key</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> string</span><span class="__sk__26r52b">, </span><span class="__sk__26ewvm">value</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> string</span><span class="__sk__26r52b">) {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">const</span><span class="__sk__18al46"> env</span><span class="__sk__2zefwf"> =</span><span class="__sk__1iv3gc"> state</span><span class="__sk__26r52b">()</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__26r52b">env[key] </span><span class="__sk__2zefwf">=</span><span class="__sk__26r52b"> value</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="indent" style="--indent-offset: 0ch;"></span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> remove</span><span class="__sk__26r52b">(</span><span class="__sk__26ewvm">key</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> string</span><span class="__sk__26r52b">) {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">const</span><span class="__sk__18al46"> env</span><span class="__sk__2zefwf"> =</span><span class="__sk__1iv3gc"> state</span><span class="__sk__26r52b">()</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">delete</span><span class="__sk__26r52b"> env[key]</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="__sk__26r52b">}</span></span></code></pre>
+      </div>
+<p>在这个代码中，<code>Env</code>和导入的<code>Instance</code>属于两个不同的<code>namespace</code>，是不同的模块和命名空间。<br>
+在单个文件中使用一个<code>namespace</code>命名空间去组织代码，实现清晰的代码结构和模块化。</p>
+<p>在其<a href="https://github.com/anomalyco/opencode/blob/616329ae97c975f21687f6c8c9c6d4d8018e6fd9/packages/opencode/AGENTS.md"><code>AGENT.md</code></a>文件中，也显式指出代码应该使用<code>namespace</code>进行组织：</p>
+
+      <div class="codeblock" data-lang="md">
+      
+        <button title="Copy" class="codecopy"><svg class="ico" width="24" height="24" fill="currentColor"><use href="#icon-copy"></use></svg></button>
+      
+      <span data-lang="md" class="codelang">md</span>
+      <pre class="shiki shiki-themes github-light github-dark __sk__18d7xz" tabindex="0"><code class="language-md"><span class="line"><span class="__sk__3vhiq7">## Code Style</span></span>
+<span class="line"></span>
+<span class="line"><span class="__sk__26ewvm">-</span><span class="__sk__215wbj"> **Runtime**</span><span class="__sk__26r52b">: Bun with TypeScript ESM modules</span></span>
+<span class="line"><span class="__sk__26ewvm">-</span><span class="__sk__215wbj"> **Imports**</span><span class="__sk__26r52b">: Use relative imports for local modules, named imports preferred</span></span>
+<span class="line"><span class="__sk__26ewvm">-</span><span class="__sk__215wbj"> **Types**</span><span class="__sk__26r52b">: Zod schemas for validation, TypeScript interfaces for structure</span></span>
+<span class="line"><span class="__sk__26ewvm">-</span><span class="__sk__215wbj"> **Naming**</span><span class="__sk__26r52b">: camelCase for variables/functions, PascalCase for classes/namespaces</span></span>
+<span class="line"><span class="__sk__26ewvm">-</span><span class="__sk__215wbj"> **Error handling**</span><span class="__sk__26r52b">: Use Result patterns, avoid throwing exceptions in tools</span></span>
+<span class="line"><span class="__sk__26ewvm">-</span><span class="__sk__215wbj"> **File structure**</span><span class="__sk__26r52b">: Namespace-based organization (e.g., </span><span class="__sk__18al46">`Tool.define()`</span><span class="__sk__26r52b">, </span><span class="__sk__18al46">`Session.create()`</span><span class="__sk__26r52b">)</span></span></code></pre>
+      </div>
+<h2 id="%E4%B8%8E%E4%BC%A0%E7%BB%9F%E6%96%B9%E5%BC%8F%E5%AF%B9%E6%AF%94%EF%BC%88%E6%AD%A4%E7%AB%A0%E8%8A%82%E5%86%85%E5%AE%B9%E6%95%B4%E7%90%86%E8%87%AAai%EF%BC%89" tabindex="-1"><a class="header-anchor" href="#%E4%B8%8E%E4%BC%A0%E7%BB%9F%E6%96%B9%E5%BC%8F%E5%AF%B9%E6%AF%94%EF%BC%88%E6%AD%A4%E7%AB%A0%E8%8A%82%E5%86%85%E5%AE%B9%E6%95%B4%E7%90%86%E8%87%AAai%EF%BC%89">与传统方式对比（此章节内容整理自AI）</a></h2>
+<p>传统方式的代码组织结构和基于 Namespace 的区别为：</p>
+
+      <div class="codeblock" data-lang="ts">
+      
+        <button title="Copy" class="codecopy"><svg class="ico" width="24" height="24" fill="currentColor"><use href="#icon-copy"></use></svg></button>
+      
+      <span data-lang="ts" class="codelang">ts</span>
+      <pre class="shiki shiki-themes github-light github-dark __sk__18d7xz" tabindex="0"><code class="language-ts"><span class="line"><span class="__sk__25k1wy">// 传统方式 vs Namespace 方式</span></span>
+<span class="line"><span class="__sk__25k1wy">// ❌ 传统：文件散乱</span></span>
+<span class="line"><span class="__sk__25k1wy">// utils/string-utils.ts</span></span>
+<span class="line"><span class="__sk__25k1wy">// utils/array-utils.ts</span></span>
+<span class="line"><span class="__sk__25k1wy">// utils/date-utils.ts</span></span>
+<span class="line"></span>
+<span class="line"><span class="__sk__25k1wy">// ✅ Namespace：逻辑聚合</span></span>
+<span class="line"><span class="__sk__2zefwf">namespace</span><span class="__sk__1iv3gc"> Utils</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> StringUtils</span><span class="__sk__26r52b"> { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> ArrayUtils</span><span class="__sk__26r52b"> { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> DateUtils</span><span class="__sk__26r52b"> { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="__sk__26r52b">}</span></span></code></pre>
+      </div>
+<h3 id="%E9%80%BB%E8%BE%91%E7%BB%84%E7%BB%87%E4%B8%8E%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E7%AE%A1%E7%90%86" tabindex="-1"><a class="header-anchor" href="#%E9%80%BB%E8%BE%91%E7%BB%84%E7%BB%87%E4%B8%8E%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E7%AE%A1%E7%90%86">逻辑组织与命名空间管理</a></h3>
+<p>避免全局污染：</p>
+
+      <div class="codeblock" data-lang="ts">
+      
+        <button title="Copy" class="codecopy"><svg class="ico" width="24" height="24" fill="currentColor"><use href="#icon-copy"></use></svg></button>
+      
+      <span data-lang="ts" class="codelang">ts</span>
+      <pre class="shiki shiki-themes github-light github-dark __sk__18d7xz" tabindex="0"><code class="language-ts"><span class="line"><span class="__sk__25k1wy">// bad</span></span>
+<span class="line"><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> formatDate</span><span class="__sk__26r52b">() {}  </span><span class="__sk__25k1wy">// 可能与其他库冲突</span></span>
+<span class="line"></span>
+<span class="line"><span class="__sk__25k1wy">// good</span></span>
+<span class="line"><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> Utils</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> formatDate</span><span class="__sk__26r52b">() {}  </span><span class="__sk__25k1wy">// 完全隔离</span></span>
+<span class="line"><span class="__sk__26r52b">}</span></span></code></pre>
+      </div>
+<p>模块化内聚：</p>
+
+      <div class="codeblock" data-lang="ts">
+      
+        <button title="Copy" class="codecopy"><svg class="ico" width="24" height="24" fill="currentColor"><use href="#icon-copy"></use></svg></button>
+      
+      <span data-lang="ts" class="codelang">ts</span>
+      <pre class="shiki shiki-themes github-light github-dark __sk__18d7xz" tabindex="0"><code class="language-ts"><span class="line"><span class="__sk__2zefwf">namespace</span><span class="__sk__1iv3gc"> ECommerce</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> Payment</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> interface</span><span class="__sk__1iv3gc"> PaymentGateway</span><span class="__sk__26r52b"> { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> processPayment</span><span class="__sk__26r52b">() { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> refundPayment</span><span class="__sk__26r52b">() { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="indent" style="--indent-offset: 0ch;"></span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> Cart</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> interface</span><span class="__sk__1iv3gc"> CartItem</span><span class="__sk__26r52b"> { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> addToCart</span><span class="__sk__26r52b">() { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> calculateTotal</span><span class="__sk__26r52b">() { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="indent" style="--indent-offset: 0ch;"></span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> User</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> interface</span><span class="__sk__1iv3gc"> UserProfile</span><span class="__sk__26r52b"> { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> Auth</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> login</span><span class="__sk__26r52b">() { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> logout</span><span class="__sk__26r52b">() { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="__sk__26r52b">}</span></span></code></pre>
+      </div>
+<h3 id="%E7%B1%BB%E5%9E%8B%E5%AE%89%E5%85%A8%E4%B8%8Eide%E6%8F%90%E7%A4%BA" tabindex="-1"><a class="header-anchor" href="#%E7%B1%BB%E5%9E%8B%E5%AE%89%E5%85%A8%E4%B8%8Eide%E6%8F%90%E7%A4%BA">类型安全与IDE提示</a></h3>
+<p>具备完整的类型链：</p>
+
+      <div class="codeblock" data-lang="ts">
+      
+        <button title="Copy" class="codecopy"><svg class="ico" width="24" height="24" fill="currentColor"><use href="#icon-copy"></use></svg></button>
+      
+      <span data-lang="ts" class="codelang">ts</span>
+      <pre class="shiki shiki-themes github-light github-dark __sk__18d7xz" tabindex="0"><code class="language-ts"><span class="line"><span class="__sk__2zefwf">namespace</span><span class="__sk__1iv3gc"> Geometry</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> interface</span><span class="__sk__1iv3gc"> Point</span><span class="__sk__26r52b"> { </span><span class="__sk__26ewvm">x</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b">; </span><span class="__sk__26ewvm">y</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b">; }</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b"></span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> Shapes</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> interface</span><span class="__sk__1iv3gc"> Circle</span><span class="__sk__26r52b"> { </span><span class="__sk__26ewvm">center</span><span class="__sk__2zefwf">:</span><span class="__sk__1iv3gc"> Point</span><span class="__sk__26r52b">; </span><span class="__sk__26ewvm">radius</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b">; }</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> interface</span><span class="__sk__1iv3gc"> Rectangle</span><span class="__sk__26r52b"> { </span><span class="__sk__26ewvm">topLeft</span><span class="__sk__2zefwf">:</span><span class="__sk__1iv3gc"> Point</span><span class="__sk__26r52b">; </span><span class="__sk__26ewvm">width</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b">; </span><span class="__sk__26ewvm">height</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b">; }</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__26r52b"></span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> Operations</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> area</span><span class="__sk__26r52b">(</span><span class="__sk__26ewvm">circle</span><span class="__sk__2zefwf">:</span><span class="__sk__1iv3gc"> Circle</span><span class="__sk__26r52b">)</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b"> { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> intersect</span><span class="__sk__26r52b">(</span><span class="__sk__26ewvm">rect1</span><span class="__sk__2zefwf">:</span><span class="__sk__1iv3gc"> Rectangle</span><span class="__sk__26r52b">, </span><span class="__sk__26ewvm">rect2</span><span class="__sk__2zefwf">:</span><span class="__sk__1iv3gc"> Rectangle</span><span class="__sk__26r52b">)</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> boolean</span><span class="__sk__26r52b"> { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b"></span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> Transform</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> rotate</span><span class="__sk__26r52b">(</span><span class="__sk__26ewvm">point</span><span class="__sk__2zefwf">:</span><span class="__sk__1iv3gc"> Point</span><span class="__sk__26r52b">, </span><span class="__sk__26ewvm">angle</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b">)</span><span class="__sk__2zefwf">:</span><span class="__sk__1iv3gc"> Point</span><span class="__sk__26r52b"> { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> translate</span><span class="__sk__26r52b">(</span><span class="__sk__26ewvm">point</span><span class="__sk__2zefwf">:</span><span class="__sk__1iv3gc"> Point</span><span class="__sk__26r52b">, </span><span class="__sk__26ewvm">dx</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b">, </span><span class="__sk__26ewvm">dy</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b">)</span><span class="__sk__2zefwf">:</span><span class="__sk__1iv3gc"> Point</span><span class="__sk__26r52b"> { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="__sk__26r52b">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="__sk__25k1wy">// 🎯 使用时获得完整的智能提示：</span></span>
+<span class="line"><span class="__sk__25k1wy">// Geometry. ← 提示：Shapes, Transform</span></span>
+<span class="line"><span class="__sk__25k1wy">// Geometry.Shapes. ← 提示：Circle, Rectangle, Operations</span></span>
+<span class="line"><span class="__sk__25k1wy">// Geometry.Shapes.Operations. ← 提示：area, intersect</span></span></code></pre>
+      </div>
+<h3 id="%E6%B8%90%E8%BF%9B%E5%BC%8F%E4%BB%A3%E7%A0%81%E6%8B%86%E5%88%86" tabindex="-1"><a class="header-anchor" href="#%E6%B8%90%E8%BF%9B%E5%BC%8F%E4%BB%A3%E7%A0%81%E6%8B%86%E5%88%86">渐进式代码拆分</a></h3>
+<p>从单体到模块的平滑过渡：</p>
+
+      <div class="codeblock" data-lang="ts">
+      
+        <button title="Copy" class="codecopy"><svg class="ico" width="24" height="24" fill="currentColor"><use href="#icon-copy"></use></svg></button>
+      
+      <span data-lang="ts" class="codelang">ts</span>
+      <pre class="shiki shiki-themes github-light github-dark __sk__18d7xz" tabindex="0"><code class="language-ts"><span class="line"><span class="__sk__25k1wy">// 阶段1：单文件开发（快速原型）</span></span>
+<span class="line"><span class="__sk__2zefwf">namespace</span><span class="__sk__1iv3gc"> App</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> Models</span><span class="__sk__26r52b"> { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> Services</span><span class="__sk__26r52b"> { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> Components</span><span class="__sk__26r52b"> { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="__sk__26r52b">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="__sk__25k1wy">// 阶段2：多文件拆分（使用引用标签）</span></span>
+<span class="line"><span class="__sk__25k1wy">/// &#x3C;</span><span class="__sk__21l1ib">reference</span><span class="__sk__1iv3gc"> path</span><span class="__sk__2zefwf">=</span><span class="__sk__1w1f48">"models/index.ts"</span><span class="__sk__25k1wy"> /></span></span>
+<span class="line"><span class="__sk__25k1wy">/// &#x3C;</span><span class="__sk__21l1ib">reference</span><span class="__sk__1iv3gc"> path</span><span class="__sk__2zefwf">=</span><span class="__sk__1w1f48">"services/index.ts"</span><span class="__sk__25k1wy"> /></span></span>
+<span class="line"><span class="__sk__25k1wy">/// &#x3C;</span><span class="__sk__21l1ib">reference</span><span class="__sk__1iv3gc"> path</span><span class="__sk__2zefwf">=</span><span class="__sk__1w1f48">"components/index.ts"</span><span class="__sk__25k1wy"> /></span></span>
+<span class="line"></span>
+<span class="line"><span class="__sk__25k1wy">// 阶段3：完整模块化（ES6 Modules）</span></span>
+<span class="line"><span class="__sk__25k1wy">// 保持命名空间结构，但拆分为独立文件</span></span></code></pre>
+      </div>
+<h3 id="%E5%B5%8C%E5%A5%97%E4%B8%8E%E4%BD%9C%E7%94%A8%E5%9F%9F%E6%8E%A7%E5%88%B6" tabindex="-1"><a class="header-anchor" href="#%E5%B5%8C%E5%A5%97%E4%B8%8E%E4%BD%9C%E7%94%A8%E5%9F%9F%E6%8E%A7%E5%88%B6">嵌套与作用域控制</a></h3>
+<p>精细的访问控制：</p>
+
+      <div class="codeblock" data-lang="ts">
+      
+        <button title="Copy" class="codecopy"><svg class="ico" width="24" height="24" fill="currentColor"><use href="#icon-copy"></use></svg></button>
+      
+      <span data-lang="ts" class="codelang">ts</span>
+      <pre class="shiki shiki-themes github-light github-dark __sk__18d7xz" tabindex="0"><code class="language-ts"><span class="line"><span class="__sk__2zefwf">namespace</span><span class="__sk__1iv3gc"> BankSystem</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__25k1wy">// 公共接口</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> interface</span><span class="__sk__1iv3gc"> Account</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__26ewvm">id</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> string</span><span class="__sk__26r52b">;</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__26ewvm">balance</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b">;</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b"></span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__25k1wy">// 内部实现细节（不导出）</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">namespace</span><span class="__sk__1iv3gc"> Internal</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">const</span><span class="__sk__18al46"> connectionPool</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> any</span><span class="__sk__26r52b">[] </span><span class="__sk__2zefwf">=</span><span class="__sk__26r52b"> [];  </span><span class="__sk__25k1wy">// 外部无法访问</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">function</span><span class="__sk__1iv3gc"> validateTransaction</span><span class="__sk__26r52b">() {}  </span><span class="__sk__25k1wy">// 私有函数</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__26r52b"></span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> processInternally</span><span class="__sk__26r52b">() {  </span><span class="__sk__25k1wy">// 通过公共接口暴露</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span class="__sk__1iv3gc">validateTransaction</span><span class="__sk__26r52b">();</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b"></span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__25k1wy">// 公共API</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> API</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> transfer</span><span class="__sk__26r52b">() {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span class="__sk__26r52b">Internal.</span><span class="__sk__1iv3gc">processInternally</span><span class="__sk__26r52b">();  </span><span class="__sk__25k1wy">// 内部调用</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="__sk__26r52b">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="__sk__25k1wy">// 外部只能访问：</span></span>
+<span class="line"><span class="__sk__25k1wy">// BankSystem.Account</span></span>
+<span class="line"><span class="__sk__25k1wy">// BankSystem.API.transfer()</span></span>
+<span class="line"><span class="__sk__25k1wy">// ❌ BankSystem.Internal 不可访问</span></span></code></pre>
+      </div>
+<h3 id="%E5%90%91%E5%90%8E%E5%85%BC%E5%AE%B9%E6%80%A7%E6%94%AF%E6%8C%81" tabindex="-1"><a class="header-anchor" href="#%E5%90%91%E5%90%8E%E5%85%BC%E5%AE%B9%E6%80%A7%E6%94%AF%E6%8C%81">向后兼容性支持</a></h3>
+<p>平滑迁移策略：</p>
+
+      <div class="codeblock" data-lang="ts">
+      
+        <button title="Copy" class="codecopy"><svg class="ico" width="24" height="24" fill="currentColor"><use href="#icon-copy"></use></svg></button>
+      
+      <span data-lang="ts" class="codelang">ts</span>
+      <pre class="shiki shiki-themes github-light github-dark __sk__18d7xz" tabindex="0"><code class="language-ts"><span class="line"><span class="__sk__25k1wy">// legacy.ts - 旧代码</span></span>
+<span class="line"><span class="__sk__2zefwf">namespace</span><span class="__sk__1iv3gc"> LegacyLib</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> oldMethod</span><span class="__sk__26r52b">() { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="__sk__26r52b">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="__sk__25k1wy">// modern.ts - 新代码，保持兼容</span></span>
+<span class="line"><span class="__sk__2zefwf">namespace</span><span class="__sk__1iv3gc"> ModernLib</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> v1</span><span class="__sk__26r52b"> {  </span><span class="__sk__25k1wy">// 兼容层</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> const</span><span class="__sk__18al46"> oldMethod</span><span class="__sk__2zefwf"> =</span><span class="__sk__26r52b"> LegacyLib.oldMethod;</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b"></span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> v2</span><span class="__sk__26r52b"> {  </span><span class="__sk__25k1wy">// 新API</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> newMethod</span><span class="__sk__26r52b">() { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="__sk__26r52b">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="__sk__25k1wy">// 使用者可以逐步迁移：</span></span>
+<span class="line"><span class="__sk__25k1wy">// LegacyLib.oldMethod() → ModernLib.v1.oldMethod() → ModernLib.v2.newMethod()</span></span></code></pre>
+      </div>
+<h3 id="%E6%96%87%E4%BB%B6%E7%BB%84%E7%BB%87%E7%81%B5%E6%B4%BB%E6%80%A7" tabindex="-1"><a class="header-anchor" href="#%E6%96%87%E4%BB%B6%E7%BB%84%E7%BB%87%E7%81%B5%E6%B4%BB%E6%80%A7">文件组织灵活性</a></h3>
+<p>引用与合并示例：</p>
+
+      <div class="codeblock" data-lang="ts">
+      
+        <button title="Copy" class="codecopy"><svg class="ico" width="24" height="24" fill="currentColor"><use href="#icon-copy"></use></svg></button>
+      
+      <span data-lang="ts" class="codelang">ts</span>
+      <pre class="shiki shiki-themes github-light github-dark __sk__18d7xz" tabindex="0"><code class="language-ts"><span class="line"><span class="__sk__25k1wy">// geometry/point.ts</span></span>
+<span class="line"><span class="__sk__2zefwf">namespace</span><span class="__sk__1iv3gc"> Geometry</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> interface</span><span class="__sk__1iv3gc"> Point</span><span class="__sk__26r52b"> { </span><span class="__sk__26ewvm">x</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b">; </span><span class="__sk__26ewvm">y</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b">; }</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> createPoint</span><span class="__sk__26r52b">(</span><span class="__sk__26ewvm">x</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b">, </span><span class="__sk__26ewvm">y</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b">)</span><span class="__sk__2zefwf">:</span><span class="__sk__1iv3gc"> Point</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">return</span><span class="__sk__26r52b"> { x, y };</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="__sk__26r52b">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="__sk__25k1wy">// geometry/shapes/circle.ts</span></span>
+<span class="line"><span class="__sk__25k1wy">/// &#x3C;</span><span class="__sk__21l1ib">reference</span><span class="__sk__1iv3gc"> path</span><span class="__sk__2zefwf">=</span><span class="__sk__1w1f48">"../point.ts"</span><span class="__sk__25k1wy"> /></span></span>
+<span class="line"><span class="__sk__2zefwf">namespace</span><span class="__sk__1iv3gc"> Geometry</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> Shapes</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> interface</span><span class="__sk__1iv3gc"> Circle</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span class="__sk__26ewvm">center</span><span class="__sk__2zefwf">:</span><span class="__sk__1iv3gc"> Point</span><span class="__sk__26r52b">;  </span><span class="__sk__25k1wy">// 来自上方的Point接口</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span class="__sk__26ewvm">radius</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b">;</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="__sk__26r52b">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="__sk__25k1wy">// geometry/shapes/rectangle.ts</span></span>
+<span class="line"><span class="__sk__25k1wy">/// &#x3C;</span><span class="__sk__21l1ib">reference</span><span class="__sk__1iv3gc"> path</span><span class="__sk__2zefwf">=</span><span class="__sk__1w1f48">"../point.ts"</span><span class="__sk__25k1wy"> /></span></span>
+<span class="line"><span class="__sk__2zefwf">namespace</span><span class="__sk__1iv3gc"> Geometry</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> namespace</span><span class="__sk__1iv3gc"> Shapes</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> interface</span><span class="__sk__1iv3gc"> Rectangle</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span class="__sk__26ewvm">topLeft</span><span class="__sk__2zefwf">:</span><span class="__sk__1iv3gc"> Point</span><span class="__sk__26r52b">;</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span class="__sk__26ewvm">width</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b">;</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span class="__sk__26ewvm">height</span><span class="__sk__2zefwf">:</span><span class="__sk__18al46"> number</span><span class="__sk__26r52b">;</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">}</span></span>
+<span class="line"><span class="__sk__26r52b">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="__sk__25k1wy">// main.ts - 使用时自动合并</span></span>
+<span class="line"><span class="__sk__25k1wy">/// &#x3C;</span><span class="__sk__21l1ib">reference</span><span class="__sk__1iv3gc"> path</span><span class="__sk__2zefwf">=</span><span class="__sk__1w1f48">"geometry/point.ts"</span><span class="__sk__25k1wy"> /></span></span>
+<span class="line"><span class="__sk__25k1wy">/// &#x3C;</span><span class="__sk__21l1ib">reference</span><span class="__sk__1iv3gc"> path</span><span class="__sk__2zefwf">=</span><span class="__sk__1w1f48">"geometry/shapes/circle.ts"</span><span class="__sk__25k1wy"> /></span></span>
+<span class="line"><span class="__sk__25k1wy">/// &#x3C;</span><span class="__sk__21l1ib">reference</span><span class="__sk__1iv3gc"> path</span><span class="__sk__2zefwf">=</span><span class="__sk__1w1f48">"geometry/shapes/rectangle.ts"</span><span class="__sk__25k1wy"> /></span></span>
+<span class="line"></span>
+<span class="line"><span class="__sk__2zefwf">const</span><span class="__sk__18al46"> circle</span><span class="__sk__2zefwf">:</span><span class="__sk__1iv3gc"> Geometry</span><span class="__sk__26r52b">.</span><span class="__sk__1iv3gc">Shapes</span><span class="__sk__26r52b">.</span><span class="__sk__1iv3gc">Circle</span><span class="__sk__2zefwf"> =</span><span class="__sk__26r52b"> { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> };</span></span>
+<span class="line"><span class="__sk__2zefwf">const</span><span class="__sk__18al46"> point</span><span class="__sk__2zefwf">:</span><span class="__sk__1iv3gc"> Geometry</span><span class="__sk__26r52b">.</span><span class="__sk__1iv3gc">Point</span><span class="__sk__2zefwf"> =</span><span class="__sk__26r52b"> Geometry.</span><span class="__sk__1iv3gc">createPoint</span><span class="__sk__26r52b">(</span><span class="__sk__18al46">0</span><span class="__sk__26r52b">, </span><span class="__sk__18al46">0</span><span class="__sk__26r52b">);</span></span></code></pre>
+      </div>
+<h3 id="%E7%BC%96%E8%AF%91%E4%B8%8E%E6%89%93%E5%8C%85%E4%BC%98%E5%8C%96" tabindex="-1"><a class="header-anchor" href="#%E7%BC%96%E8%AF%91%E4%B8%8E%E6%89%93%E5%8C%85%E4%BC%98%E5%8C%96">编译与打包优化</a></h3>
+<p>Tree-shaking 友好结构：</p>
+
+      <div class="codeblock" data-lang="ts">
+      
+        <button title="Copy" class="codecopy"><svg class="ico" width="24" height="24" fill="currentColor"><use href="#icon-copy"></use></svg></button>
+      
+      <span data-lang="ts" class="codelang">ts</span>
+      <pre class="shiki shiki-themes github-light github-dark __sk__18d7xz" tabindex="0"><code class="language-ts"><span class="line"><span class="__sk__2zefwf">namespace</span><span class="__sk__1iv3gc"> Analytics</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__25k1wy">// 完整的功能集</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> trackPageView</span><span class="__sk__26r52b">() { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> trackEvent</span><span class="__sk__26r52b">() { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> function</span><span class="__sk__1iv3gc"> trackError</span><span class="__sk__26r52b">() { </span><span class="__sk__25k1wy">/* ... */</span><span class="__sk__26r52b"> }</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b"></span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__25k1wy">// 但编译时可以只包含使用的部分</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__2zefwf">export</span><span class="__sk__2zefwf"> const</span><span class="__sk__18al46"> minimal</span><span class="__sk__2zefwf"> =</span><span class="__sk__26r52b"> {</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="__sk__26r52b">trackPageView,  </span><span class="__sk__25k1wy">// 只导出需要的</span></span>
+<span class="line"><span class="indent">  </span><span class="__sk__26r52b">};</span></span>
+<span class="line"><span class="__sk__26r52b">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="__sk__25k1wy">// 使用端</span></span>
+<span class="line"><span class="__sk__2zefwf">import</span><span class="__sk__26r52b"> { Analytics } </span><span class="__sk__2zefwf">from</span><span class="__sk__1w1f48"> './analytics'</span><span class="__sk__26r52b">;</span></span>
+<span class="line"></span>
+<span class="line"><span class="__sk__25k1wy">// 可以按需引入</span></span>
+<span class="line"><span class="__sk__2zefwf">const</span><span class="__sk__18al46"> essentialAnalytics</span><span class="__sk__2zefwf"> =</span><span class="__sk__26r52b"> Analytics.minimal;</span></span></code></pre>
+      </div>
+<h2 id="%E4%BC%98%E5%8A%BF%E6%80%BB%E7%BB%93" tabindex="-1"><a class="header-anchor" href="#%E4%BC%98%E5%8A%BF%E6%80%BB%E7%BB%93">优势总结</a></h2>
+<p>使用<code>namespace</code>具备如下优势：</p>
+<ul>
+<li>逻辑清晰：天然的分层组织结构</li>
+<li>避免污染：自包含的命名空间</li>
+<li>渐进迁移：从单体到模块的平滑路径</li>
+<li>工具友好：完善的IDE智能提示支持</li>
+<li>灵活拆分：支持多文件组织同一命名空间</li>
+<li>访问控制：通过<code>export</code>控制可见性</li>
+<li>编译优化：<code>Typescript</code>编辑器深度优化</li>
+<li>向后兼容：便于 API 版本管理和迁移</li>
+</ul>
+<p><code>namespace</code>提供了面向大型项目的、类型安全的、渐进可拆分的代码组织方案，特别适合需要良好架构设计和长期维护的 Typescript 项目。</p>
+</article></div></main><div class="baw"><button type="button" class="bat" aria-label="Toggle TOC"><svg class="ico" width="24" height="24" fill="currentColor"><use href="#icon-toc"></use></svg></button><aside class="ba"><div class="tc"><h5 class="tt">目录</h5><div><nav class="toc-container"><ul><li><a href="#%E4%B8%8E%E4%BC%A0%E7%BB%9F%E6%96%B9%E5%BC%8F%E5%AF%B9%E6%AF%94%EF%BC%88%E6%AD%A4%E7%AB%A0%E8%8A%82%E5%86%85%E5%AE%B9%E6%95%B4%E7%90%86%E8%87%AAai%EF%BC%89">与传统方式对比（此章节内容整理自AI）</a><ul><li><a href="#%E9%80%BB%E8%BE%91%E7%BB%84%E7%BB%87%E4%B8%8E%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E7%AE%A1%E7%90%86">逻辑组织与命名空间管理</a></li><li><a href="#%E7%B1%BB%E5%9E%8B%E5%AE%89%E5%85%A8%E4%B8%8Eide%E6%8F%90%E7%A4%BA">类型安全与IDE提示</a></li><li><a href="#%E6%B8%90%E8%BF%9B%E5%BC%8F%E4%BB%A3%E7%A0%81%E6%8B%86%E5%88%86">渐进式代码拆分</a></li><li><a href="#%E5%B5%8C%E5%A5%97%E4%B8%8E%E4%BD%9C%E7%94%A8%E5%9F%9F%E6%8E%A7%E5%88%B6">嵌套与作用域控制</a></li><li><a href="#%E5%90%91%E5%90%8E%E5%85%BC%E5%AE%B9%E6%80%A7%E6%94%AF%E6%8C%81">向后兼容性支持</a></li><li><a href="#%E6%96%87%E4%BB%B6%E7%BB%84%E7%BB%87%E7%81%B5%E6%B4%BB%E6%80%A7">文件组织灵活性</a></li><li><a href="#%E7%BC%96%E8%AF%91%E4%B8%8E%E6%89%93%E5%8C%85%E4%BC%98%E5%8C%96">编译与打包优化</a></li></ul></li><li><a href="#%E4%BC%98%E5%8A%BF%E6%80%BB%E7%BB%93">优势总结</a></li></ul></nav></div></div></aside></div></div>
+  </body>
+  
+  <script>"use strict";var BlogApp_js_entry=(()=>{var fe=Object.create;var X=Object.defineProperty;var we=Object.getOwnPropertyDescriptor;var ye=Object.getOwnPropertyNames;var Te=Object.getPrototypeOf,$e=Object.prototype.hasOwnProperty;var xe=(h,l,e)=>l in h?X(h,l,{enumerable:!0,configurable:!0,writable:!0,value:e}):h[l]=e;var ke=(h,l)=>()=>(l||h((l={exports:{}}).exports,l),l.exports);var Be=(h,l,e,s)=>{if(l&&typeof l=="object"||typeof l=="function")for(let o of ye(l))!$e.call(h,o)&&o!==e&&X(h,o,{get:()=>l[o],enumerable:!(s=we(l,o))||s.enumerable});return h};var Me=(h,l,e)=>(e=h!=null?fe(Te(h)):{},Be(l||!h||!h.__esModule?X(e,"default",{value:h,enumerable:!0}):e,h));var I=(h,l,e)=>xe(h,typeof l!="symbol"?l+"":l,e);var he=ke((oe,ne)=>{(function(h,l){typeof oe=="object"&&typeof ne<"u"?ne.exports=l():typeof define=="function"&&define.amd?define(l):(h=typeof globalThis<"u"?globalThis:h||self).dayjs=l()})(oe,(function(){"use strict";var h=1e3,l=6e4,e=36e5,s="millisecond",o="second",a="minute",g="hour",b="day",y="week",T="month",_="quarter",$="year",H="date",ae="Invalid Date",pe=/^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/,ge=/\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g,ve={name:"en",weekdays:"Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),months:"January_February_March_April_May_June_July_August_September_October_November_December".split("_"),ordinal:function(c){var r=["th","st","nd","rd"],t=c%100;return"["+c+(r[(t-20)%10]||r[t]||r[0])+"]"}},K=function(c,r,t){var i=String(c);return!i||i.length>=r?c:""+Array(r+1-i.length).join(t)+c},be={s:K,z:function(c){var r=-c.utcOffset(),t=Math.abs(r),i=Math.floor(t/60),n=t%60;return(r<=0?"+":"-")+K(i,2,"0")+":"+K(n,2,"0")},m:function c(r,t){if(r.date()<t.date())return-c(t,r);var i=12*(t.year()-r.year())+(t.month()-r.month()),n=r.clone().add(i,T),d=t-n<0,u=r.clone().add(i+(d?-1:1),T);return+(-(i+(t-n)/(d?n-u:u-n))||0)},a:function(c){return c<0?Math.ceil(c)||0:Math.floor(c)},p:function(c){return{M:T,y:$,w:y,d:b,D:H,h:g,m:a,s:o,ms:s,Q:_}[c]||String(c||"").toLowerCase().replace(/s$/,"")},u:function(c){return c===void 0}},P="en",O={};O[P]=ve;var ce="$isDayjsObject",Q=function(c){return c instanceof G||!(!c||!c[ce])},U=function c(r,t,i){var n;if(!r)return P;if(typeof r=="string"){var d=r.toLowerCase();O[d]&&(n=d),t&&(O[d]=t,n=d);var u=r.split("-");if(!n&&u.length>1)return c(u[0])}else{var f=r.name;O[f]=r,n=f}return!i&&n&&(P=n),n||!i&&P},x=function(c,r){if(Q(c))return c.clone();var t=typeof r=="object"?r:{};return t.date=c,t.args=arguments,new G(t)},v=be;v.l=U,v.i=Q,v.w=function(c,r){return x(c,{locale:r.$L,utc:r.$u,x:r.$x,$offset:r.$offset})};var G=(function(){function c(t){this.$L=U(t.locale,null,!0),this.parse(t),this.$x=this.$x||t.x||{},this[ce]=!0}var r=c.prototype;return r.parse=function(t){this.$d=(function(i){var n=i.date,d=i.utc;if(n===null)return new Date(NaN);if(v.u(n))return new Date;if(n instanceof Date)return new Date(n);if(typeof n=="string"&&!/Z$/i.test(n)){var u=n.match(pe);if(u){var f=u[2]-1||0,w=(u[7]||"0").substring(0,3);return d?new Date(Date.UTC(u[1],f,u[3]||1,u[4]||0,u[5]||0,u[6]||0,w)):new Date(u[1],f,u[3]||1,u[4]||0,u[5]||0,u[6]||0,w)}}return new Date(n)})(t),this.init()},r.init=function(){var t=this.$d;this.$y=t.getFullYear(),this.$M=t.getMonth(),this.$D=t.getDate(),this.$W=t.getDay(),this.$H=t.getHours(),this.$m=t.getMinutes(),this.$s=t.getSeconds(),this.$ms=t.getMilliseconds()},r.$utils=function(){return v},r.isValid=function(){return this.$d.toString()!==ae},r.isSame=function(t,i){var n=x(t);return this.startOf(i)<=n&&n<=this.endOf(i)},r.isAfter=function(t,i){return x(t)<this.startOf(i)},r.isBefore=function(t,i){return this.endOf(i)<x(t)},r.$g=function(t,i,n){return v.u(t)?this[i]:this.set(n,t)},r.unix=function(){return Math.floor(this.valueOf()/1e3)},r.valueOf=function(){return this.$d.getTime()},r.startOf=function(t,i){var n=this,d=!!v.u(i)||i,u=v.p(t),f=function(W,L){var D=v.w(n.$u?Date.UTC(n.$y,L,W):new Date(n.$y,L,W),n);return d?D:D.endOf(b)},w=function(W,L){return v.w(n.toDate()[W].apply(n.toDate("s"),(d?[0,0,0,0]:[23,59,59,999]).slice(L)),n)},k=this.$W,B=this.$M,A=this.$D,z="set"+(this.$u?"UTC":"");switch(u){case $:return d?f(1,0):f(31,11);case T:return d?f(1,B):f(0,B+1);case y:var q=this.$locale().weekStart||0,F=(k<q?k+7:k)-q;return f(d?A-F:A+(6-F),B);case b:case H:return w(z+"Hours",0);case g:return w(z+"Minutes",1);case a:return w(z+"Seconds",2);case o:return w(z+"Milliseconds",3);default:return this.clone()}},r.endOf=function(t){return this.startOf(t,!1)},r.$set=function(t,i){var n,d=v.p(t),u="set"+(this.$u?"UTC":""),f=(n={},n[b]=u+"Date",n[H]=u+"Date",n[T]=u+"Month",n[$]=u+"FullYear",n[g]=u+"Hours",n[a]=u+"Minutes",n[o]=u+"Seconds",n[s]=u+"Milliseconds",n)[d],w=d===b?this.$D+(i-this.$W):i;if(d===T||d===$){var k=this.clone().set(H,1);k.$d[f](w),k.init(),this.$d=k.set(H,Math.min(this.$D,k.daysInMonth())).$d}else f&&this.$d[f](w);return this.init(),this},r.set=function(t,i){return this.clone().$set(t,i)},r.get=function(t){return this[v.p(t)]()},r.add=function(t,i){var n,d=this;t=Number(t);var u=v.p(i),f=function(B){var A=x(d);return v.w(A.date(A.date()+Math.round(B*t)),d)};if(u===T)return this.set(T,this.$M+t);if(u===$)return this.set($,this.$y+t);if(u===b)return f(1);if(u===y)return f(7);var w=(n={},n[a]=l,n[g]=e,n[o]=h,n)[u]||1,k=this.$d.getTime()+t*w;return v.w(k,this)},r.subtract=function(t,i){return this.add(-1*t,i)},r.format=function(t){var i=this,n=this.$locale();if(!this.isValid())return n.invalidDate||ae;var d=t||"YYYY-MM-DDTHH:mm:ssZ",u=v.z(this),f=this.$H,w=this.$m,k=this.$M,B=n.weekdays,A=n.months,z=n.meridiem,q=function(L,D,Y,J){return L&&(L[D]||L(i,d))||Y[D].slice(0,J)},F=function(L){return v.s(f%12||12,L,"0")},W=z||function(L,D,Y){var J=L<12?"AM":"PM";return Y?J.toLowerCase():J};return d.replace(ge,(function(L,D){return D||(function(Y){switch(Y){case"YY":return String(i.$y).slice(-2);case"YYYY":return v.s(i.$y,4,"0");case"M":return k+1;case"MM":return v.s(k+1,2,"0");case"MMM":return q(n.monthsShort,k,A,3);case"MMMM":return q(A,k);case"D":return i.$D;case"DD":return v.s(i.$D,2,"0");case"d":return String(i.$W);case"dd":return q(n.weekdaysMin,i.$W,B,2);case"ddd":return q(n.weekdaysShort,i.$W,B,3);case"dddd":return B[i.$W];case"H":return String(f);case"HH":return v.s(f,2,"0");case"h":return F(1);case"hh":return F(2);case"a":return W(f,w,!0);case"A":return W(f,w,!1);case"m":return String(w);case"mm":return v.s(w,2,"0");case"s":return String(i.$s);case"ss":return v.s(i.$s,2,"0");case"SSS":return v.s(i.$ms,3,"0");case"Z":return u}return null})(L)||u.replace(":","")}))},r.utcOffset=function(){return 15*-Math.round(this.$d.getTimezoneOffset()/15)},r.diff=function(t,i,n){var d,u=this,f=v.p(i),w=x(t),k=(w.utcOffset()-this.utcOffset())*l,B=this-w,A=function(){return v.m(u,w)};switch(f){case $:d=A()/12;break;case T:d=A();break;case _:d=A()/3;break;case y:d=(B-k)/6048e5;break;case b:d=(B-k)/864e5;break;case g:d=B/e;break;case a:d=B/l;break;case o:d=B/h;break;default:d=B}return n?d:v.a(d)},r.daysInMonth=function(){return this.endOf(T).$D},r.$locale=function(){return O[this.$L]},r.locale=function(t,i){if(!t)return this.$L;var n=this.clone(),d=U(t,i,!0);return d&&(n.$L=d),n},r.clone=function(){return v.w(this.$d,this)},r.toDate=function(){return new Date(this.valueOf())},r.toJSON=function(){return this.isValid()?this.toISOString():null},r.toISOString=function(){return this.$d.toISOString()},r.toString=function(){return this.$d.toUTCString()},c})(),le=G.prototype;return x.prototype=le,[["$ms",s],["$s",o],["$m",a],["$H",g],["$W",b],["$M",T],["$y",$],["$D",H]].forEach((function(c){le[c[1]]=function(r){return this.$g(r,c[0],c[1])}})),x.extend=function(c,r){return c.$i||(c(r,G,x),c.$i=!0),x},x.locale=U,x.isDayjs=Q,x.unix=function(c){return x(1e3*c)},x.en=O[P],x.Ls=O,x.p={},x}))});var V={desktop:1200,tablet:768,mobile:480},de={headerButton:"hb-btn"},S={navLink:"nln",navLinkActive:"nln-a",baseNav:"bn",baseNavActive:"bn-a"},N={baseAsideWrapper:"baw",baseAsideTocToggle:"bat",baseAsideTocHidden:"bah"},ue={baseContainer:"bc"};var C=class{constructor(l){I(this,"elements");this.elements=l,this.init()}init(){document.readyState==="loading"?document.addEventListener("DOMContentLoaded",()=>this.boot()):this.boot()}boot(){this.cacheElements(),this.bindEvents()}};var j=class{static isMobile(){return window.innerWidth<=V.tablet}static isDesktopSmall(){return window.innerWidth>V.tablet&&window.innerWidth<=V.desktop}static isDesktop(){return window.innerWidth>V.desktop}static getScreenType(){return this.isMobile()?"mobile":this.isDesktopSmall()?"tablet":"desktop"}};var ee=class extends C{constructor(){super({menuButton:null,tocButton:null,sidebar:null,tocWrapper:null,tocToggle:null,container:null});I(this,"elements",{menuButton:null,tocButton:null,sidebar:null,tocWrapper:null,tocToggle:null,container:null})}boot(){this.cacheElements(),this.bindEvents(),this.handleResize()}cacheElements(){let e=document.querySelectorAll(`.${de.headerButton}`);this.elements.menuButton=e[0]||null,this.elements.tocButton=e[1]||null,this.elements.sidebar=document.querySelector(`.${S.baseNav}`),this.elements.tocWrapper=document.querySelector(`.${N.baseAsideWrapper}`),this.elements.container=document.querySelector(`.${ue.baseContainer}`),(!this.elements.menuButton||!this.elements.tocButton)&&console.warn("[Sidebar] \u672A\u627E\u5230 Header \u4EA4\u4E92\u6309\u94AE\uFF0C\u8BF7\u68C0\u67E5 Header \u7ED3\u6784"),this.elements.sidebar||console.warn("[Sidebar] \u672A\u627E\u5230\u5DE6\u4FA7\u4FA7\u8FB9\u680F"),this.elements.tocWrapper||console.warn("[Sidebar] \u672A\u627E\u5230\u53F3\u4FA7 TOC"),this.elements.container||console.warn("[Sidebar] \u672A\u627E\u5230\u5E03\u5C40\u5BB9\u5668")}bindEvents(){let{menuButton:e,tocButton:s}=this.elements;e?.addEventListener("click",o=>this.toggleSidebarMobile(o,"sidebar")),s?.addEventListener("click",o=>this.toggleSidebarMobile(o,"toc")),this.updateTocToggle(),document.addEventListener("click",o=>this.handleOutsideClick(o)),window.addEventListener("resize",()=>this.handleResize())}updateTocToggle(){let{tocWrapper:e}=this.elements;this.elements.tocToggle=e?.querySelector(`.${N.baseAsideTocToggle}`)||null,this.elements.tocToggle?.addEventListener("click",s=>this.toggleTOC(s))}toggleSidebarMobile(e,s){if(j.isMobile()){if(s==="sidebar"){let{sidebar:o,menuButton:a}=this.elements;if(!o||!a)return;o.classList.contains(S.baseNavActive)?o.classList.remove(S.baseNavActive):(this.closeAll(),o.classList.add(S.baseNavActive)),e.stopPropagation()}else if(s==="toc"){let{tocButton:o,container:a}=this.elements;if(!o||!a)return;a.classList.contains(N.baseAsideTocHidden)?(this.closeAll(),a.classList.remove(N.baseAsideTocHidden)):a.classList.add(N.baseAsideTocHidden),e.stopPropagation()}}}toggleTOC(e){if(j.isMobile())return;let{tocToggle:s,container:o}=this.elements;!s||!o||(o.classList.toggle(N.baseAsideTocHidden),e.stopPropagation())}closeAll(){this.elements.sidebar?.classList.remove(S.baseNavActive),this.elements.container?.classList.add(N.baseAsideTocHidden)}handleOutsideClick(e){if(!j.isMobile())return;let s=e.target,{sidebar:o,tocWrapper:a,menuButton:g,tocButton:b}=this.elements,y=o?.contains(s),T=a?.contains(s),_=g?.contains(s),$=b?.contains(s);!y&&!T&&!_&&!$&&this.closeAll()}handleResize(){switch(j.getScreenType()){case"mobile":this.elements.sidebar?.classList.remove(S.baseNavActive),this.elements.container?.classList.add(N.baseAsideTocHidden);break;case"tablet":this.elements.sidebar?.classList.remove(S.baseNavActive),this.elements.container?.classList.add(N.baseAsideTocHidden);break;case"desktop":this.elements.sidebar?.classList.remove(S.baseNavActive);break}}};new ee;var m={colorBg:"--c-bg",colorBgSec:"--c-bg-secondary",colorText:"--c-text-title",colorTextLight:"--c-text-light",colorTextMuted:"--c-text-muted",colorBrand:"--c-brand",colorBorder:"--c-border",fontBase:"--font-sans",fontMono:"--font-mono",widthSidebar:"--sidebar-width",widthToc:"--sidebar-toc-width",widthContentMax:"--content-max-width",spaceSidebar:"--sidebar-gap",colorScrollbarThumb:"--c-scrollbar-thumb",colorScrollbarTrack:"--c-scrollbar-track",widthScrollbar:"--w-scrollbar",colorBgHint:"--c-bg-hint",colorTextHint:"--c-text-hint",colorBorderHint:"--c-border-hint",colorBgWarning:"--c-bg-warning",colorTextWarning:"--c-text-warning",colorBorderWarning:"--c-border-waring",colorBgDetails:"--c-bg-details",colorTextDetails:"--c-text-details",colorBorderDetails:"--c-border-details",colorBgNote:"--c-bg-note",colorTextNote:"--c-text-note",colorBorderNote:"--c-border-note",colorBgTab:"--c-bg-tab",colorBgTabHeader:"--c-bg-tab-header",radiusTab:"--r-radius-tab",colorBgTabHover:"--c-bg-hover-tab",colorSkNotionDiffRemove:"--c-sk-diff-remove",colorSkNotionDiffAdd:"--c-sk-diff-add",colorBgSkHighlight:"--c-bg-sk-highlight",colorBgSkNotionErrLvl:"--c-bg-sk-error-level",colorBgSkNotionWarnLvl:"--c-bg-sk-warn-level"};var E={navSection:"ns",navSectionTop:"ns-t",navSectionBottom:"ns-b",navSectionMiddle:"ns-m",navLogo:"nl",navTitle:"nt",navFooterInfo:"nfi",navFooterButtons:"nfb",navFooterButton:"nfb-btn",...S},Se=`
+.${E.navSection} {
+  padding: 1rem;
+}
+
+ .${E.navSectionTop} {
+  border-bottom: 1px solid var(${m.colorBorder});
+  background-color: var(${m.colorBg});
+}
+
+.${E.navSectionBottom} {
+  padding: 0 1rem;
+  border-top: 1px solid var(${m.colorBorder});
+  background-color: var(${m.colorBg});
+}
+
+.${E.navSectionMiddle} {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 1rem;
+}
+
+.${E.navLogo} {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: var(${m.colorText});
+  letter-spacing: 0.05em;
+}
+
+.${E.navTitle} {
+  margin: 0 0 1rem 0;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  color: var(${m.colorTextLight});
+}
+
+.${E.navFooterInfo} p {
+  color: var(${m.colorTextMuted});
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.${E.navFooterInfo} a:hover {
+  color: var(${m.colorBrand});
+}
+
+.${E.navLink} {
+  display: block;
+  color: var(${m.colorText});
+  border-bottom: none;
+  margin-bottom: 0.25rem;
+}
+
+.${E.navLink}:hover {
+  color: var(${m.colorBrand});
+  padding-left: 0.25rem;
+}
+
+.${E.navLinkActive} {
+  color: var(${m.colorBrand});
+  font-weight: 600;
+  padding-left: 0.5rem;
+  border-radius: 5px;
+  border-left: 2px solid var(${m.colorBrand});
+}
+
+.${E.navFooterButtons} {
+  display: flex;
+  justify-content: end;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.${E.navFooterButton} {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border: none;
+  background: transparent;
+  color: var(${m.colorTextLight});
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+}
+
+.${E.navFooterButton}:hover {
+  color: var(${m.colorBrand});
+  background-color: var(${m.colorBgSec});
+}
+`,Le="",Fe=[Se,Le].join(`
+`),Z={themeToggle:"theme-toggle",backToTop:"back-to-top",themeIconId:"theme-icon"};var R=h=>"icon-"+h;var te=class extends C{constructor(){super({links:[],themeButton:null,backToTopButton:null});I(this,"elements",{links:[],themeButton:null,backToTopButton:null})}boot(){this.cacheElements(),this.updateActiveState(),this.initThemeState(),this.bindEvents()}cacheElements(){this.elements.links=document.querySelectorAll(`.${S.navLink}`),this.elements.themeButton=document.querySelector(`[data-action=${Z.themeToggle}]`),this.elements.backToTopButton=document.querySelector(`[data-action=${Z.backToTop}]`),this.elements.links.length===0&&console.warn("[NavActive] \u672A\u627E\u5230\u5BFC\u822A\u94FE\u63A5")}bindEvents(){this.elements.themeButton?.addEventListener("click",()=>this.toggleTheme()),this.elements.backToTopButton?.addEventListener("click",()=>this.scrollToTop())}initThemeState(){let s=localStorage.getItem("theme")||"system";this.applyTheme(s)}toggleTheme(){let e=this.getThemeMode(),s=["system","light","dark"],o=s.indexOf(e),a=s[(o+1)%s.length];localStorage.setItem("theme",a),this.applyTheme(a),console.log("[NavActive] \u4E3B\u9898\u6A21\u5F0F\u5DF2\u5207\u6362\u4E3A:",a)}getThemeMode(){return localStorage.getItem("theme")||"system"}applyTheme(e){let s;e==="system"?s=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":s=e,document.documentElement.setAttribute("data-theme",s),this.updateThemeIcon(e)}updateThemeIcon(e){let o=document.querySelector(`[data-icon-id=${Z.themeIconId}]`)?.querySelector("use");if(o){let g={system:"theme-system",light:"theme-light",dark:"theme-dark"}[e];o.setAttribute("href",`#${R(g)}`)}}scrollToTop(){window.scrollTo({top:0,behavior:"smooth"})}updateActiveState(){let e=this.getCurrentPath();console.log("[NavActive] \u5F53\u524D\u8DEF\u5F84:",e);let s=0;this.elements.links.forEach(o=>{let a=o.getAttribute("href");a&&(o.classList.remove(S.navLinkActive),this.isPathActive(e,a)&&(o.classList.add(S.navLinkActive),console.log("[NavActive] \u2713 \u6FC0\u6D3B\u94FE\u63A5:",a,o.textContent.trim()),s++))}),s===0&&console.log("[NavActive] \u65E0\u5339\u914D\u7684\u5BFC\u822A\u94FE\u63A5")}getCurrentPath(){return window.location.pathname}isPathActive(e,s){let o=b=>{try{return new URL(b,window.location.origin).pathname}catch{return b}},a=o(e),g=o(s);return a===g}update(){this.updateActiveState()}};new te;var me=Me(he(),1);function Ee(h,l="YYYY-MM-DD"){return(0,me.default)(h).format(l)}var re=class extends C{constructor(){super({timeElements:document.querySelectorAll("time[data-format]")})}cacheElements(){}bindEvents(){}boot(){super.boot(),this.formatAllTimeElements()}formatAllTimeElements(){this.elements.timeElements.forEach(l=>{let e=l.getAttribute("data-format"),s=l.getAttribute("datetime");if(!(!e||!s))try{let o=Ee(s,e);l.textContent=o}catch(o){console.error("Failed to format date:",o)}})}};new re;var p={wrapper:"tabs-tabs-wrapper",header:"tabs-tabs-header",button:"tabs-tab-button",container:"tabs-tabs-container",content:"tabs-tab-content",active:"active"},et=`
+.${p.wrapper} {
+  margin: 1.5rem 0px;
+  border: 1px solid var(${m.colorBorder});
+  border-radius: var(${m.radiusTab});
+  background: var(${m.colorBgTab});
+}
+.${p.header} {
+  overflow-x: auto;
+  margin: 0px;
+  padding: 0px;
+  border-radius: var(${m.radiusTab}) var(${m.radiusTab}) 0 0;
+  background: var(${m.colorBgTabHeader});
+  list-style: none;
+  white-space: nowrap;
+  transition: background .3s ease;
+}
+button.${p.button} {
+  position: relative;
+  min-width: 4rem;
+  font-weight: 600;
+  font-size: 0.875em;
+  line-height: 1.75;
+  cursor: pointer;
+  margin: 0px;
+  padding: 0.5em 1em;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  background: transparent;
+  border-radius: var(${m.radiusTab}) var(${m.radiusTab}) 0 0;
+  transition: background .3s ease, color .3s ease;
+}
+button.${p.button}.${p.active} {
+  background: var(${m.colorBgTab});
+}
+
+.${p.container} {
+  display: flow-root;
+}
+.${p.container} .${p.content} {
+  padding: 1rem 0.75rem;
+  display: none;
+}
+.${p.container} .${p.content}.${p.active} {
+  display: block;
+}
+`,tt=`
+${m.colorBgTab}: #fff;
+${m.colorBgTabHeader}: #ebebef;
+${m.colorBgTabHover}: rgba(142, 150, 170, .16);
+${m.radiusTab}: .5rem;
+`,ot=`
+${m.colorBgTab}: #1b1b1f;
+${m.colorBgTabHeader}: #32363f;
+${m.colorBgTabHover}: rgba(101, 117, 133, .18);
+`;var se=class extends C{constructor(){super({wrappers:document.querySelectorAll(`.${p.wrapper}`)});I(this,"elements",{wrappers:document.querySelectorAll(`.${p.wrapper}`)})}boot(){this.cacheElements(),this.initActiveTabs(),this.bindEvents()}initActiveTabs(){this.elements.wrappers.forEach(e=>{let s=e.querySelector(`.${p.header}`);if(!s||s.querySelector(`.${p.button}.${p.active}`))return;let a=s.querySelector(`.${p.button}`);if(!a)return;let g=a.getAttribute("data-tab");if(!g)return;let b=parseInt(g,10);this.switchTabInWrapper(e,b)})}cacheElements(){this.elements.wrappers=document.querySelectorAll(`.${p.wrapper}`)}bindEvents(){document.addEventListener("click",e=>this.handleTabClick(e))}handleTabClick(e){let o=e.target.closest(`.${p.button}`);if(!o)return;let a=o.closest(`.${p.wrapper}`);if(!a)return;e.preventDefault(),e.stopPropagation();let g=o.getAttribute("data-tab");if(!g)return;let b=parseInt(g,10),y=a.getAttribute("data-id");y?this.switchTabInGroup(y,b):this.switchTabInWrapper(a,b)}switchTabInGroup(e,s){document.querySelectorAll(`.${p.wrapper}[data-id="${e}"]`).forEach(a=>{let g=a.querySelector(`.${p.header}`),b=a.querySelector(`.${p.container}`);if(!g||!b)return;let y=g.querySelectorAll(`.${p.button}`),T=b.querySelectorAll(`.${p.content}`);Array.from(y).some($=>parseInt($.getAttribute("data-tab")||"-1",10)===s)&&(y.forEach($=>{let H=parseInt($.getAttribute("data-tab")||"-1",10);$.classList.toggle(p.active,H===s)}),T.forEach($=>{let H=parseInt($.getAttribute("data-index")||"-1",10);$.classList.toggle(p.active,H===s)}))})}switchTabInWrapper(e,s){let o=e.querySelector(`.${p.header}`),a=e.querySelector(`.${p.container}`);if(!o||!a)return;let g=o.querySelectorAll(`.${p.button}`),b=a.querySelectorAll(`.${p.content}`);g.forEach(y=>{let T=parseInt(y.getAttribute("data-tab")||"-1",10);y.classList.toggle(p.active,T===s)}),b.forEach(y=>{let T=parseInt(y.getAttribute("data-index")||"-1",10);y.classList.toggle(p.active,T===s)})}};new se;var M={codeblock:"codeblock",codeCopy:"codecopy",codeLang:"codelang"},ct=`
+.${M.codeblock} {
+  position: relative;
+  margin: 1rem 0;
+}
+.${M.codeblock} .${M.codeCopy} {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  border: 1px solid var(${m.colorBorder});
+  opacity: 0;
+  cursor: pointer;
+  transition: border-color .25s, background-color .25s, opacity .25s;
+}
+.${M.codeblock} .${M.codeLang} {
+  position: absolute;
+  top: 2px;
+  right: 8px;
+  z-index: 2;
+  font-size: 0.75rem;
+  font-weight: 500;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: color .4s, opacity .4s;
+}
+.${M.codeblock} > pre {
+  z-index: 1;
+  margin: 0;
+  padding: 1rem 0;
+}
+.${M.codeblock}:hover .${M.codeCopy} {
+  opacity: 1;
+}
+.${M.codeblock}:hover .${M.codeLang} {
+  opacity: 0;
+}
+`;var ie=class extends C{constructor(){super({copyButtons:document.querySelectorAll(`.${M.codeCopy}`)});I(this,"elements",{copyButtons:document.querySelectorAll(`.${M.codeCopy}`)})}boot(){this.cacheElements(),this.bindEvents()}cacheElements(){this.elements.copyButtons=document.querySelectorAll(`.${M.codeCopy}`)}bindEvents(){document.addEventListener("click",e=>this.handleCopyClick(e))}handleCopyClick(e){let o=e.target.closest(`.${M.codeCopy}`);if(!o)return;e.preventDefault(),e.stopPropagation();let a=o.closest(`.${M.codeblock}`);if(!a)return;let g=a.querySelector("pre");if(!g)return;let b=g.textContent||"";b&&this.copyToClipboard(b,o)}copyToClipboard(e,s){navigator.clipboard.writeText(e).then(()=>{this.showSuccessIcon(s),setTimeout(()=>{this.restoreCopyIcon(s)},2e3)}).catch(o=>{console.error("Failed to copy:",o)})}showSuccessIcon(e){let s=e.querySelector("use");if(!s)return;let o=R("copy-success");s.setAttribute("href",`#${o}`);let a=e.querySelector("svg");a&&a.classList.add("ico-success")}restoreCopyIcon(e){let s=e.querySelector("use");if(!s)return;let o=R("copy");s.setAttribute("href",`#${o}`);let a=e.querySelector("svg");a&&a.classList.remove("ico-success")}};new ie;})();
+</script>
+  </html>
